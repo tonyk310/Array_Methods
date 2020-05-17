@@ -1,0 +1,277 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The join() method creates and returns a new string by concatenating all of the elements in an array (or an array-like object), separated by commas or a specified separator string. If the array has only one item, then that item will be returned without using the separator.
+
+SYNTAX
+	join(array, seperator);
+
+PARAMETERS
+	seperator
+
+RETURN VALUE
+	A string with all array elements joined. If arr.length is 0, the empty string is returned.	
+
+PROTOTYPE
+
+function join (array, seperator) {
+	var stringToReturn = "";
+	var seperator = ",";
+	if (seperator) {
+		seperator = seperator;
+	}
+	for (var i = 0; i < array.length; i++) {
+
+		var currentElement = null;
+		if (typeof array[i] === "string") {
+			currentElement = array[i];
+		} else {
+			var stringifiedObjectOrValue = JSON.stringify(array[i]);
+			currentElement = stringifiedObjectOrValue;
+		}
+		if (i === 0) {
+			stringToReturn = currentElement;
+		} else {
+			stringToReturn = stringToReturn + seperator + currentElement;
+		}		
+	}
+	return stringToReturn;
+}
+
+TESTS
+It should create and return a new string
+If arr.length is 0, the empty string is returned.
+It should concatenate all the elements in an array
+if no seperator the elements are seperated with a comma 
+If seperator it is converted into a string if necessary
+if seperator is empty string all elements are joined together no spaces.
+if the array has only one item then that item will be returned without using seperator
+if an element is undefined, null, or an empty array {}, it is converted to an empty string.
+
+*/
+		function join (array, seperator) {
+			var stringToReturn = "";
+			var joinSeperator = ",";
+			if (arguments.length > 1) {
+				if (typeof seperator === "string") {
+					joinSeperator = seperator;
+				} else {
+					joinSeperator = JSON.stringify(seperator);
+				}
+				if (seperator === "") {
+					joinSeperator = '';
+				}
+			} 
+			
+			for (var i = 0; i < array.length; i++) {
+
+				
+				if (array[i] === undefined ) {
+					array[i] = "";
+				}
+				if (array[i] === null) {
+					array[i] = "";
+				}
+				if (Array.isArray(array[i]) === true && array[i].length === 0) {
+					array[i] = "";
+				}
+				
+				
+				var currentElement = null;
+				if (typeof array[i] === "string") {
+					currentElement = array[i];
+				} else {
+					var stringifiedObjectOrValue = JSON.stringify(array[i]);
+					currentElement = stringifiedObjectOrValue;
+				}
+
+				if (i === 0) {
+					stringToReturn = currentElement;
+				} else {
+					stringToReturn = stringToReturn + joinSeperator + currentElement;
+				}	
+			}
+
+			return stringToReturn;
+		}
+
+tests({
+	'It should create and return a new string': function() {
+
+		var returnValueOfJoin = join([]);
+		eq(typeof(returnValueOfJoin)==="string", true);
+	},
+
+	'It should concatenate all the elements in an array': function() {
+		var returnValueOfJoin = join([1,2, {}]);
+		eq(returnValueOfJoin, "1,2,{}");
+	},
+	'If arr.length is 0, the empty string is returned.': function() {
+		var testArray = [];
+		var returnValueOfJoin = join(testArray);
+		eq(testArray.length, 0);
+		eq(returnValueOfJoin, "");
+	},
+	'if seperator is empty string all elements are joined together no spaces.': function() {
+		// function join (array, seperator) {
+		// 	var stringToReturn = "";
+		// 	if (arguments.length > 1) {
+		// 		var joinSeperator = seperator;
+		// 	} else {
+		// 		joinSeperator = ",";
+		// 	}
+			
+		// 	for (var i = 0; i < array.length; i++) {
+
+		// 		var currentElement = null;
+		// 		if (typeof array[i] === "string") {
+		// 			currentElement = array[i];
+		// 		} else {
+		// 			var stringifiedObjectOrValue = JSON.stringify(array[i]);
+		// 			currentElement = stringifiedObjectOrValue;
+		// 		}
+		// 		if (i === 0) {
+		// 			stringToReturn = currentElement;
+		// 		} else {
+		// 			stringToReturn = stringToReturn + joinSeperator + currentElement;
+		// 		}	
+		// 	}
+
+		// 	return stringToReturn;
+		// }
+
+		var returnValueOfJoin = join([1,2,{}], '');
+		eq(returnValueOfJoin, "12{}");
+	},	
+	'if no seperator the elements are seperated with a comma': function() {
+		
+		// function join (array) {
+		// 	var stringToReturn = "";
+		// 	for (var i = 0; i < array.length; i++) {
+
+		// 		var currentElement = null;
+		// 		if (typeof array[i] === "string") {
+		// 			currentElement = array[i];
+		// 		} else {
+		// 			var stringifiedObjectOrValue = JSON.stringify(array[i]);
+		// 			currentElement = stringifiedObjectOrValue;
+		// 		}
+		// 		if (i === 0) {
+		// 			stringToReturn = currentElement;
+		// 		} else {
+		// 			stringToReturn = stringToReturn + "," + currentElement;
+		// 		}	
+		// 	}
+
+		// 	return stringToReturn;
+		// }
+
+		var returnValueOfJoin = join([1,2]);
+		eq(returnValueOfJoin, "1,2");
+	},
+
+	'If seperator it is converted into a string if necessary': function() {
+		
+		// function join (array, seperator) {
+		// 	var stringToReturn = "";
+		// 	if (arguments.length > 1) {
+		// 		var joinSeperator = JSON.stringify(seperator);
+		// 	} else {
+		// 		joinSeperator = ",";
+		// 	}
+			
+		// 	for (var i = 0; i < array.length; i++) {
+
+		// 		var currentElement = null;
+		// 		if (typeof array[i] === "string") {
+		// 			currentElement = array[i];
+		// 		} else {
+		// 			var stringifiedObjectOrValue = JSON.stringify(array[i]);
+		// 			currentElement = stringifiedObjectOrValue;
+		// 		}
+		// 		if (i === 0) {
+		// 			stringToReturn = currentElement;
+		// 		} else {
+		// 			stringToReturn = stringToReturn + joinSeperator + currentElement;
+		// 		}	
+		// 	}
+
+		// 	return stringToReturn;
+		// }		
+		var returnValueOfJoin = join([1,2], {});
+		eq(returnValueOfJoin, "1{}2");
+	},
+
+	'if the array has only one item then that item will be returned without using seperator': function() {
+
+		var returnValueOfJoin = join([1]);
+		eq(returnValueOfJoin, "1");	
+
+	},
+	'if an element is undefined, null, or an empty array [], it is converted to an empty string.': function() {
+		// function join (array, seperator) {
+		// 	var stringToReturn = "";
+		// 	var joinSeperator = ",";
+		// 	if (arguments.length > 1) {
+		// 		if (typeof seperator === "string") {
+		// 			joinSeperator = seperator;
+		// 		} else {
+		// 			joinSeperator = JSON.stringify(seperator);
+		// 		}
+		// 		if (seperator === "") {
+		// 			joinSeperator = '';
+		// 		}
+		// 	} 
+			
+		// 	for (var i = 0; i < array.length; i++) {
+
+				
+		// 		if (array[i] === undefined ) {
+		// 			array[i] = "";
+		// 		}
+		// 		if (array[i] === null) {
+		// 			array[i] = "";
+		// 		}
+		// 		if (Array.isArray(array[i]) === true && array[i].length === 0) {
+		// 			array[i] = "";
+		// 		}
+				
+				
+		// 		var currentElement = null;
+		// 		if (typeof array[i] === "string") {
+		// 			currentElement = array[i];
+		// 		} else {
+		// 			var stringifiedObjectOrValue = JSON.stringify(array[i]);
+		// 			currentElement = stringifiedObjectOrValue;
+		// 		}
+
+		// 		if (i === 0) {
+		// 			stringToReturn = currentElement;
+		// 		} else {
+		// 			stringToReturn = stringToReturn + joinSeperator + currentElement;
+		// 		}	
+		// 	}
+
+		// 	return stringToReturn;
+		// }
+		var returnValueOfJoin = join([1, undefined, 2, null, 3, [], 4]);
+		eq(returnValueOfJoin, "1,,2,,3,,4");
+		var returnValueOfJoin1 = join([undefined]);
+		eq(returnValueOfJoin1, "");
+		var returnValueOfJoin2 = join([null]);
+		eq(returnValueOfJoin2, "");
+		var returnValueOfJoin3 = join([[]]);
+		eq(returnValueOfJoin3, "");
+	}
+	
+	
+
+});
+
+
+
+
+
+</script>

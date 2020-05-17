@@ -1,0 +1,88 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The pop() method removes the last element from an array and returns that element. This method changes the length of the array.
+
+SYNTAZ
+	pop(arr);
+
+RETURN VALUE
+	The removed element from the array; undfined if the array is empty.
+
+PROTOTYPE
+
+function pop(array) {
+
+	var indexToPop = array.length - 1;
+	var elementToPop = array[indexToPop];
+	array.splice(indexToPop);
+	return elementToPop;
+}
+
+TESTS
+The pop method removes the last element from an array and returns that value to the caller.	
+If you call pop() on an empty array, it returns undefined.
+
+*/
+
+function pop (array) {
+	var indexToPop = array.length - 1;
+	var elementToPop = array[indexToPop];
+	array.splice(indexToPop);
+	return elementToPop;	
+}
+
+tests({
+	'The pop method removes the last element from an array': function() {
+
+		var testArray = [1];
+		eq(testArray[0], 1);
+		var returnValueOfPop = pop(testArray);
+		eq(testArray[0], undefined);
+
+	},
+
+	'It should returns that value to the caller.': function() {
+
+		var testArray = [1];
+		var returnValueOfPop = pop(testArray);
+		eq(returnValueOfPop, 1);
+	},
+	
+	'If you call pop() on an empty array, it returns undefined.': function() {
+		var returnValueOfPop = pop([]);
+		eq(returnValueOfPop, undefined);
+	},
+
+	'If the argument is not an array it should throw a typeError': function() {
+		var isTypeError = false;
+		try {
+			pop("string");
+		} catch(e) {
+			isTypeError = e instanceof TypeError;
+		}
+		eq(isTypeError, true);
+	},
+
+	'It should completely remove the item from the array and not leave holes in the array.': function() {
+
+		var testArray = [1,2,3];
+		eq(testArray.length, 3);
+		var returnValueOfPop = pop(testArray);
+		
+		eq(testArray.length, 2);
+
+
+	}
+	
+	
+
+});
+
+
+
+
+
+</script>

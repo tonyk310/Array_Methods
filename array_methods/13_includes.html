@@ -1,0 +1,218 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+Array.prototype.includes()
+
+The includes() method determines whether an array includes a certain value among its entries, returning true or false as appropriate.
+
+Syntax
+includes(array, valueToFind[, fromIndex]);
+
+Parameters
+	array
+	valueToFind
+	fromIndex
+
+Return Value
+	A Boolean which is true if the value of valueToFind is found within the array (, or the part of the array indicated by the index fromIndex, if specified)
+
+	Values of zero are all considered to be equal, regardless of sign.  (That is, -0 is considered to be equal to both 0 and +0), but false is not considered to be the same as 0.
+
+Prototype
+
+function includes (array, valueToFind, fromIndex) {
+	var startingIndex = 0;
+	if (arguments.length > 2) {
+		startingIndex = fromIndex;
+	}
+
+	for (var i = startingIndex; i < array.length; i++) {
+		if (array[i] === valueToFind) {
+			return true;
+		}
+	}
+	return false;
+}
+
+Tests:
+It should return true if valueToFind is found within the array.
+It should return false if valueToFind is not found within the array.
+If fromIndex is present it should begin searching for valueToFind at that index
+It should search the first character at fromIndex.
+If fromIndex is negative it should search arr.length + fromIndex.
+fromIndex should default to 0
+values of 0 are all considered equal(-0 = 0 = +0)
+false is not considered equal to 0
+*/
+
+		function includes (array, valueToFind, fromIndex) {
+
+			var startingIndex = 0;
+
+			if (arguments.length > 2) {
+				if (fromIndex < 0) {
+					startingIndex = array.length + fromIndex;
+				} else {
+					startingIndex = fromIndex;
+				}
+				
+			}
+			for (var i = startingIndex; i < array.length; i++) {
+				if (array[i] === valueToFind) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+tests({
+
+	'It should return a value other than undefined.': function() {
+
+		var returnValueOfIncludes = includes([]);
+		eq(Boolean(returnValueOfIncludes), false);
+
+	},
+
+
+
+	'It should return true if valueToFind is found within the array.': function() {
+
+
+		var returnValueOfIncludes = includes([1,2,3], 1);
+		eq(returnValueOfIncludes, true);
+	},
+
+	'It should return false if valueToFind is not found within the array.': function() {
+
+		var returnValueOfIncludes = includes([1,2,3], 0);
+		eq(returnValueOfIncludes, false);
+
+	},
+	
+	'If fromIndex is present it should begin searching for valueToFind at that index': function() {
+
+		// function includes (array, valueToFind, fromIndex) {
+
+		// 	var startingIndex = 0
+
+		// 	if (arguments.length > 2) {
+		// 		startingIndex = fromIndex;
+		// 	}
+		// 	for (var i = startingIndex; i < array.length; i++) {
+		// 		if (array[i] === valueToFind) {
+		// 			return true;
+		// 		}
+		// 	}
+		// 	return false;
+		// }
+
+		var returnValueOfIncludes1 = includes([1,0,0], 1, 0);
+		eq(returnValueOfIncludes1, true);
+
+		var returnValueOfIncludes2 = includes([1,0,0], 1, 1);
+		eq(returnValueOfIncludes2, false);
+
+		// var returnValueOfIncludes2 = includes([1,0,1], 1, 1);
+		// eq(returnValueOfIncludes2, true);
+	},
+
+	'If fromIndex is negative it should search from index (arr.length + fromIndex.)': function() {
+
+		// function includes (array, valueToFind, fromIndex) {
+
+		// 	var startingIndex = 0;
+
+		// 	if (arguments.length > 2) {
+		// 		if (fromIndex < 0) {
+		// 			startingIndex = array.length + fromIndex;
+		// 		} else {
+		// 			startingIndex = fromIndex;
+		// 		}
+				
+		// 	}
+		// 	for (var i = startingIndex; i < array.length; i++) {
+		// 		if (array[i] === valueToFind) {
+		// 			return true;
+		// 		}
+		// 	}
+		// 	return false;
+		// }
+		var returnValueOfIncludes1 = includes([1,0,1], 1, 0);
+		eq(returnValueOfIncludes1, true);
+
+		var returnValueOfIncludes2 = includes([1,0,0], 1, -1);
+		eq(returnValueOfIncludes2, false);
+
+
+
+	},
+	'fromIndex should default to 0': function() {
+
+		var returnValueOfIncludes = includes([0,0,1], 1, 0);
+		eq(returnValueOfIncludes, true);
+
+
+	},
+	'values of 0 are all considered equal(-0 = 0 = +0)': function() {
+
+		var returnValueOfIncludes1 = includes([+0], +0);
+		var returnValueOfIncludes2 = includes([0], 0);
+		var returnValueOfIncludes3 = includes([-0], -0);
+		eq(returnValueOfIncludes1, true);
+		eq(returnValueOfIncludes2, true);
+		eq(returnValueOfIncludes3, true);
+
+		eq(returnValueOfIncludes1 === true && returnValueOfIncludes2 === true && returnValueOfIncludes3 === true, true);
+
+
+	},
+	'false is not considered equal to 0, it should treat 0 as a number not as false': function() {
+		var returnValueOfIncludes1 = includes([0], 0);
+		var returnValueOfIncludes2 = includes([0], false);
+		eq(returnValueOfIncludes1 === returnValueOfIncludes2, false);
+	},
+
+	'it should pass in NaN as a value to evaluate': function () {
+		
+		function includes (array, valueToFind, fromIndex) {
+
+			var startingIndex = 0;
+
+			if (arguments.length > 2) {
+				if (fromIndex < 0) {
+					startingIndex = array.length - fromIndex;
+				} else {
+					startingIndex = fromIndex;
+				}
+				
+			}
+			for (var i = startingIndex; i < array.length; i++) {
+				console.log(typeof(valueTofind));
+
+				if (Number.isNaN(array[i]) && Number.isNaN(valueToFind) === true) {
+					return true;
+				}
+				
+				if (array[i] === valueToFind) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		var returnValueOfIncludes = includes([0,0,NaN, 0], NaN);
+		eq(returnValueOfIncludes, true);
+	}
+	
+	
+
+});
+
+
+
+
+
+</script>

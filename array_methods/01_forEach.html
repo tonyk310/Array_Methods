@@ -1,0 +1,162 @@
+<script src="../tinytest.js"></script>
+<script>
+
+// SYNTAX
+  // arr.forEach(callback(currentValue [, index [, array]])[, thisArg]);
+
+// PARAMETERS
+  // callback
+    // currentValue
+    // index
+    // array
+  // thisArg
+
+// RETURN VALUE
+  // undefined
+
+// ******************************************************************
+
+// BIND
+// the bind() method creates a new function that, when called, has its 'this' keyword set to the provided value, // with a given sequence of arguments preceding any provided when the new function is called.
+
+// 
+
+
+// ****************************************************************** 
+// ****************************************************************** 
+
+// Example 1: 
+// forEach([1,2,3], function() {
+// 	console.log("HI");
+// });
+
+// Example 2: 
+// forEach([1,2,3], function(number) {
+// 	console.log(number);
+// });
+
+// Example 3:
+// It should pass in the index of the currentValue of the array as the second argument into the callback function.
+// forEach([1,2,3], function(currentValue, index) {
+//   console.log(index);
+// });
+
+// Example 4:
+// It should pass in the The array as the third argument into the callback function.
+// forEach([1,2,3], function(currentValue, index, originalArray) {
+//   console.log(originalArray);
+// });
+
+// Example 5:
+// It should pass a value to use as this when executing the callback.
+// forEach([1], function(){}, {});
+
+
+// ****************************************************************** 
+// ******************************************************************
+
+tests({
+
+  'It should run the callback array.length times.': function() {
+
+	function forEach(array, callback) {
+		for(var i = 0; i < array.length; i++) {
+			callback();
+		}
+	}
+
+	// ******************************************
+
+  	var numberOfTimesCallbackRuns = 0;
+  	forEach([1,2,3], function() {
+  		numberOfTimesCallbackRuns++;
+  	});
+  	eq(3, numberOfTimesCallbackRuns);
+
+  },
+
+  'It should pass in the ith element of the array as the first argument into the callback function.': function() {
+
+// *********************************************
+  	function forEach(array, callback) {
+		for(var i = 0; i < array.length; i++) {
+			callback(array[i]);
+		}
+	}
+// *********************************************
+// *********************************************
+  	
+  	forEach([1], function(element) {
+  		eq(1, element);
+  	});
+  },
+
+  '3: It should pass in the index of the currentValue of the array as the second argument into the callback function.': function() {
+
+// *********************************************
+    function forEach(array, callback) {
+    for(var i = 0; i < array.length; i++) {
+      callback(array[i], i);
+    }
+  }
+// *********************************************
+// *********************************************    
+
+    forEach([1], function(element, index) {
+      eq(0, index);
+    });
+
+  },
+
+  '4 It should pass in the originalArray as the third argument into the callback function.': function() {
+
+// *********************************************
+    function forEach(array, callback) {
+    for(var i = 0; i < array.length; i++) {
+      callback(array[i], i, array);
+    }
+  }
+// *********************************************
+// *********************************************     
+    
+    var testArray = [1];
+    forEach(testArray, function(element, index, originalArray) {
+      eq(testArray, originalArray);
+    });
+  },
+
+  'It should accept a configurable this object': function() {
+
+// *********************************************
+    function forEach(array, callback, optionalThisArg) {
+
+      // create a new variable and set it to original callback
+      var forEachCallback = callback;
+      // now the callback is named forEachCallback
+
+      // if thisArg is true set forEachCallback variable to callback.bind();
+      if (optionalThisArg) {
+        // we want to bind thisArg to the callback function
+        forEachCallback = callback.bind(optionalThisArg);
+        // this will return a NEW function which is bound to 'this' when it runs.
+        // now we are running a new seperate function with 'this' bound to thisArg
+      }
+
+      for(var i = 0; i < array.length; i++) {
+        forEachCallback(array[i], i, array);
+      }
+    }
+// *********************************************
+// *********************************************     
+
+    var optionalThisObject = {
+      description: "I should be accessable within the callback"
+    };
+    forEach([1], function() {
+      eq(this.description, optionalThisObject.description);
+      eq(this.description, "I should be accessable within the callback");
+    }, optionalThisObject);
+  }
+
+});
+</script>

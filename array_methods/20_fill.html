@@ -1,0 +1,429 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The fill() method changes all elements in an array to a static value, from a start index (default 0) to an end index (default array.length). It returns the modified array.
+
+SYNTAX
+	fill(array, value, start, end);
+
+PARAMETERS
+	array
+	value
+		Value to fill array with.
+	start
+		start index default 0
+	end
+		end index default arr.length
+
+RETURN VALUE
+	The modified array, filled with 'value'.
+
+PROTOTYPE
+
+function fill (array, value) {
+	for (var i = 0; i < array.length; i++) {
+		array[i] = value;
+	}
+	return array;
+}
+
+TESTS
+It should return the modified array filled with value.
+It should mutate the original array and return it, not a copy of it.
+
+If no 'start' is provided it should default 0.
+If 'start' is negative, it is treated as array.length + start.
+
+If no 'end' is provided it should default array.length.
+If 'end' is negative is is treated as array.length + end.
+
+If the second parameter (value) is an object, each slot in the returned array should reference that object.
+
+It should be intentially generic; it does not require that its 'this' value be and Array object.
+
+If the first argument (array) is not an array or an array like object it should return TypeError.
+*/
+
+		function fill (array, value, start, end) {
+			
+			var startingIndex = 0;
+			var endingIndex = array.length;
+
+			if (!Array.isArray(array)) {
+				throw new TypeError;
+			}
+
+			// end
+			if (arguments.length > 3) {
+					if (end < 0) {
+						endingIndex = array.length + end;
+					} else {
+						endingIndex = end;
+					}						
+			}
+			// start
+			if (arguments.length > 2) {
+					if (start < 0) {
+						// startingIndex = length plus negative integer
+						startingIndex = array.length + start;
+					} else {
+						startingIndex = start;
+					}				
+			}
+
+			for (var i = startingIndex; i < endingIndex; i++) {
+				array[i] = value;
+			}
+			return array;
+		}
+
+
+tests({
+	'It should return the modified array filled with value.': function() {
+
+		var testArray = [1,2,3];
+		var returnValueOfFill = fill(testArray, 4);
+		eq(returnValueOfFill[0], 4);
+		eq(returnValueOfFill.length, 3);
+
+	},
+
+	'It should mutate the original array and return it, not a copy of it.': function() {
+
+		var testArray = [0];
+		eq(testArray[0], 0);
+		var returnValueOfFill = fill(testArray, 4);
+		eq(testArray[0], 4);
+
+	},
+
+
+	'If no start index is provided it should default 0.': function() {
+
+		var testArray = [0,1];
+		fill(testArray, 4);
+		eq(testArray[0], 4);
+		eq(testArray[1], 4);		
+
+
+	},	
+
+	'If start index is provided it should be the first element mutated.': function() {
+
+
+		var testArray = [0,1];
+		fill(testArray, 4, 1);
+		eq(testArray[0], 0);
+		eq(testArray[1], 4);
+
+	},
+	// 'If start index is not a number it will return original unmuted array.': function() {
+
+
+	// 	var testArray = [0,1];
+	// 	fill(testArray, 4, NaN);
+	// 	eq(testArray[0], 0);
+	// 	eq(testArray[1], 1);
+
+	// },
+
+	'If start index is negative, it is treated as array.length + start.': function() {
+
+		// function fill (array, value, start) {
+			
+		// 	var startingIndex = 0;
+
+		// 	if (arguments.length > 2) {
+		// 		if (Number.isInteger(start)) {
+		// 			if (start < 0) {
+		// 				// startingIndex = length plus negative integer
+		// 				startingIndex = array.length + start;
+		// 			} else {
+		// 				startingIndex = start;
+		// 			}
+		// 		} else {
+		// 			return array;
+		// 		}				
+		// 	}
+
+		// 	for (var i = startingIndex; i < array.length; i++) {
+		// 		array[i] = value;
+		// 	}
+		// 	return array;
+		// }
+
+		var testArray = [0,1];
+		fill(testArray, 4, -1);
+		eq(testArray[0], 0);
+		eq(testArray[1], 4);
+
+	},
+	'If no end index is provided it should default array.length.': function() {
+
+		var testArray = [0,1];
+		fill(testArray, 4, 0);
+		eq(testArray[0], 4);
+		eq(testArray[1], 4);
+
+	},
+	'If end index is provided the array should be mutated up to but not including that value.': function() {
+
+		// function fill (array, value, start, end) {
+			
+		// 	var startingIndex = 0;
+		// 	var endingIndex = array.length;
+
+		// 	// end
+		// 	if (arguments.length > 3) {
+		// 		endingIndex = end;
+		// 	}
+
+
+		// 	// start
+		// 	if (arguments.length > 2) {
+		// 		if (Number.isInteger(start)) {
+		// 			if (start < 0) {
+		// 				// startingIndex = length plus negative integer
+		// 				startingIndex = array.length + start;
+		// 			} else {
+		// 				startingIndex = start;
+		// 			}
+		// 		} else {
+		// 			return array;
+		// 		}				
+		// 	}
+
+		// 	for (var i = startingIndex; i < endingIndex; i++) {
+		// 		array[i] = value;
+		// 	}
+		// 	return array;
+		// }		
+// debugger;
+		var testArray = [0,1,2];
+		fill(testArray, 4, 0,2);
+		eq(testArray[0], 4);
+		eq(testArray[1], 4);
+		eq(testArray[2], 2);
+
+
+	},
+	'If end index is negative is is treated as array.length + end.': function() {
+
+		// function fill (array, value, start, end) {
+			
+		// 	var startingIndex = 0;
+		// 	var endingIndex = array.length;
+
+		// 	// end
+		// 	if (arguments.length > 3) {
+		// 		if (end < 0) {
+		// 			endingIndex = array.length + end;
+		// 		} else {
+		// 			endingIndex = end;
+		// 		}	
+		// 	}
+
+
+		// 	// start
+		// 	if (arguments.length > 2) {
+		// 		if (Number.isInteger(start)) {
+		// 			if (start < 0) {
+		// 				// startingIndex = length plus negative integer
+		// 				startingIndex = array.length + start;
+		// 			} else {
+		// 				startingIndex = start;
+		// 			}
+		// 		} else {
+		// 			return array;
+		// 		}				
+		// 	}
+
+		// 	for (var i = startingIndex; i < endingIndex; i++) {
+		// 		array[i] = value;
+		// 	}
+		// 	return array;
+		// }			
+
+		var testArray = [0,1,2];
+		fill(testArray, 4, 0, -2);
+		eq(testArray[0], 4);
+		eq(testArray[1], 1);
+		eq(testArray[2], 2);
+
+	},
+	// 'start and end should only accept an integer, if not it should return original unmutated array': function() {
+
+	// 	// function fill (array, value, start, end) {
+			
+	// 	// 	var startingIndex = 0;
+	// 	// 	var endingIndex = array.length;
+
+	// 	// 	// is start and end a number
+	// 	// 	if (!Number.isInteger(start) && !Number.isInteger(end)) {
+	// 	// 		return array;
+	// 	// 	}
+
+	// 	// 	// end
+	// 	// 	if (arguments.length > 3) {
+	// 	// 		if (end < 0) {
+	// 	// 			endingIndex = array.length + end;
+	// 	// 		} else {
+	// 	// 			endingIndex = end;
+	// 	// 		}	
+	// 	// 	}
+	// 	// 	// start
+	// 	// 	if (arguments.length > 2) {
+	// 	// 		if (start < 0) {
+	// 	// 			// startingIndex = length plus negative integer
+	// 	// 			startingIndex = array.length + start;
+	// 	// 		} else {
+	// 	// 			startingIndex = start;
+	// 	// 		}
+	// 	// 	}
+
+	// 	// 	for (var i = startingIndex; i < endingIndex; i++) {
+	// 	// 		array[i] = value;
+	// 	// 	}
+	// 	// 	return array;
+	// 	// }
+
+
+	// 	var testArray = [0,1];
+	// 	fill(testArray, 4, NaN, 0);
+	// 	eq(testArray[0], 0);
+	// 	eq(testArray[1], 1);
+	// 	var testArray = [0,1];
+	// 	fill(testArray, 4, 0, NaN);
+	// 	eq(testArray[0], 0);
+	// 	eq(testArray[1], 1);
+	// 	var testArray = [0,1];
+	// 	fill(testArray, 4, NaN, NaN);
+	// 	eq(testArray[0], 0);
+	// 	eq(testArray[1], 1);
+
+	// },
+
+	// 'end should only accept an integer otherwise it should return original array': function() {
+	// 	// function fill (array, value, start, end) {
+			
+	// 	// 	var startingIndex = 0;
+	// 	// 	var endingIndex = array.length;
+
+	// 	// 	// end
+	// 	// 	if (arguments.length > 3) {
+	// 	// 		if (Number.isInteger(end)) {
+	// 	// 			if (end < 0) {
+	// 	// 				endingIndex = array.length + end;
+	// 	// 			} else {
+	// 	// 				endingIndex = end;
+	// 	// 			}						
+	// 	// 		} else {
+	// 	// 			return array;
+	// 	// 		}
+	// 	// 	}
+
+
+	// 	// 	// start
+	// 	// 	if (arguments.length > 2) {
+	// 	// 		if (Number.isInteger(start)) {
+	// 	// 			if (start < 0) {
+	// 	// 				// startingIndex = length plus negative integer
+	// 	// 				startingIndex = array.length + start;
+	// 	// 			} else {
+	// 	// 				startingIndex = start;
+	// 	// 			}
+	// 	// 		} else {
+	// 	// 			return array;
+	// 	// 		}				
+	// 	// 	}
+
+	// 	// 	for (var i = startingIndex; i < endingIndex; i++) {
+	// 	// 		array[i] = value;
+	// 	// 	}
+	// 	// 	return array;
+	// 	// }	
+	// 	var testArray = [0,1];
+	// 	var returnValueOfFill = fill(testArray, 4, 0, "string");
+	// 	eq(testArray, returnValueOfFill);
+
+	// },
+	'If the second parameter (value) is an object, each slot in the returned array should reference that object.': function() {
+
+		var testArray = [1];
+		var testObj = {name: "I am an object value"};
+		fill(testArray, testObj);
+		eq(testArray[0].name, "I am an object value");
+
+
+
+	},
+	'It should be intentially generic; it does not require that its "this" value be and Array object.': function() {
+
+
+
+	}, 
+	'If the first argument (array) is not an array or an array like object it should return TypeError.': function() {
+
+		// function fill (array, value, start, end) {
+			
+		// 	var startingIndex = 0;
+		// 	var endingIndex = array.length;
+
+		// 	if (Array.isArray(array)) {
+		// 		throw new TypeError;
+		// 	}
+
+		// 	// end
+		// 	if (arguments.length > 3) {
+		// 		if (Number.isInteger(end)) {
+		// 			if (end < 0) {
+		// 				endingIndex = array.length + end;
+		// 			} else {
+		// 				endingIndex = end;
+		// 			}						
+		// 		} else {
+		// 			return array;
+		// 		}
+		// 	}
+		// 	// start
+		// 	if (arguments.length > 2) {
+		// 		if (Number.isInteger(start)) {
+		// 			if (start < 0) {
+		// 				// startingIndex = length plus negative integer
+		// 				startingIndex = array.length + start;
+		// 			} else {
+		// 				startingIndex = start;
+		// 			}
+		// 		} else {
+		// 			return array;
+		// 		}				
+		// 	}
+
+		// 	for (var i = startingIndex; i < endingIndex; i++) {
+		// 		array[i] = value;
+		// 	}
+		// 	return array;
+		// }	
+
+		var testArray = "string";
+		var isTypeError = false;
+		try {
+			fill(testArray, 4);
+		} catch(e) {
+			isTypeError = e instanceof TypeError;
+		}
+		eq(isTypeError, true);
+
+	}
+	
+	
+
+});
+
+
+
+
+
+</script>

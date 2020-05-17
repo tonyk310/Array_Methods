@@ -1,0 +1,374 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The copyWithin() method shallow copies part of an array to another location in the same array and returns it without modifying its length.
+
+Syntax
+	copyWithin(array, target[, start[, end]])
+
+Parameters
+	array
+	target
+	start
+	end
+
+Return Value
+	The modified array.
+
+Prototype
+
+function copyWithin (array, target, start, end) {
+	var copyWithinArray = [];
+	var startingIndex = 0;
+	var endingIndex = array.length;
+	if (start) {
+		startingIndex = start;
+	}
+	if (end) {
+		endingIndex = end;
+	}
+	for (var i = startingIndex; i < endingIndex; i++) {
+		copyWithinArray.push(array[i]);
+	}
+	for (var i = target; i < copyWithinArray.length; i++) {
+		array[i] = copyWithinArray[i];
+	}
+	return array;
+}	
+
+Tests
+	It should return the original array.
+
+	The target should be a zero based index.
+	It should paste the copy at the target.
+	If the target is negative it will be counted from the end.
+	If the target is greater than arr.length, nothing will be copied.
+	If the target is positioned after start, the copied sequence will be trimmed to fit arr.length.
+
+	start should be a zero based integer.
+	start should be the index to start copying elements.
+	if start is negative it will be counted from the end.
+	if no start value it will copy from index 0
+
+	end should be zero based index.
+	end should end copying elements from.
+	it should not include the end index to copy
+	if end is negative, end will be counted from the end.
+	if no end, it should default to arr.length.
+
+	it should paste even when the copied and pasted regions overlap
+	it does not alter the length of the original array.
+	it will create properties if necesarry.
+
+*/
+
+
+		function copyWithin (array, target, start, end) {
+
+			if (typeof(array) !== "object") {
+				throw new TypeError();
+			}
+
+			var copyWithinArray = [];
+			var startingIndex = 0;
+			var endingIndex = array.length;
+
+			if (target < 0) {
+				target = array.length + target;
+			}
+			if (start) {
+				startingIndex = start;
+			}
+			if (start < 0) {
+				startingIndex = array.length + start;
+			}
+			if (end) {
+				endingIndex = end;
+			}
+			if (end < 0) {
+				endingIndex = array.length + end;
+			}
+			
+			for (var i = startingIndex; i < endingIndex; i++) {
+				copyWithinArray.push(array[i]);
+			}
+			
+			for (var i = 0; i < copyWithinArray.length; i++) {
+				array[i + target] = copyWithinArray[i];
+			}
+			return array;
+		}				
+
+tests({
+	'It should return the original array.': function() {
+
+		function copyWithin (array) {
+			return array;
+		}
+
+		var testArray = [0];
+		var returnValueOfCopyWithin = copyWithin(testArray);
+		eq(testArray, returnValueOfCopyWithin);
+	},
+
+	'It should paste the copy at the target.': function() {
+
+		// function copyWithin (array, target, start, end) {
+		// 	var copyWithinArray = [];
+		// 	var startingIndex = 0;
+		// 	var endingIndex = array.length;
+		// 	if (start) {
+		// 		startingIndex = start;
+		// 	}
+		// 	if (end) {
+		// 		endingIndex = end;
+		// 	}
+		// 	for (var i = startingIndex; i < endingIndex; i++) {
+		// 		copyWithinArray.push(array[i]);
+		// 	}
+		// 	for (var i = target; i < copyWithinArray.length; i++) {
+		// 		array[i] = copyWithinArray[i];
+		// 	}
+		// 	return array;
+		// }	
+
+		var testArray = [0, 1];
+		eq(testArray[0], 0);	
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1);
+		eq(testArray[0], 1);		
+	},
+
+	'If the target is negative it will be counted from the end.': function() {
+
+
+		// function copyWithin (array, target, start, end) {
+		// 	var copyWithinArray = [];
+		// 	var startingIndex = 0;
+		// 	var endingIndex = array.length;
+		// 	var target = target;
+		// 	if (target < 0) {
+		// 		target = array.length + target;
+		// 	}
+		// 	if (start) {
+		// 		startingIndex = start;
+		// 	}
+		// 	if (end) {
+		// 		endingIndex = end;
+		// 	}
+		// 	for (var i = startingIndex; i < endingIndex; i++) {
+		// 		copyWithinArray.push(array[i]);
+		// 	}
+		// 	for (var i = target; i < copyWithinArray.length; i++) {
+		// 		array[i] = copyWithinArray[i];
+		// 	}
+		// 	return array;
+		// }	
+
+
+		var testArray = [0, 1, 2];
+		var returnValueOfCopyWithin = copyWithin(testArray, -3, 2);
+		eq(testArray[0], 2);				
+	},
+	'If the target is greater than arr.length, nothing will be copied.': function() {
+
+		var testArray = [0, 1, 2];
+		var returnValueOfCopyWithin = copyWithin(testArray, 4, 2);
+		eq(testArray, returnValueOfCopyWithin);
+
+	},
+	'If the target is positioned after start, the copied sequence will be trimmed to fit arr.length.': function() {
+
+		// function copyWithin (array, target, start, end) {
+		// 	var copyWithinArray = [];
+		// 	var startingIndex = 0;
+		// 	var endingIndex = array.length;
+
+		// 	if (target < 0) {
+		// 		target = array.length + target;
+		// 	}
+		// 	if (start) {
+		// 		startingIndex = start;
+		// 	}
+		// 	if (end) {
+		// 		endingIndex = end;
+		// 	}
+			
+		// 	for (var i = startingIndex; i < endingIndex; i++) {
+		// 		copyWithinArray.push(array[i]);
+		// 	}
+			
+		// 	for (var i = 0; i < copyWithinArray.length; i++) {
+		// 		// target added to i lets you have the zero index in teh array plus the target added to the array
+		// 		array[i + target] = copyWithinArray[i];
+		// 	}
+		// 	return array;
+		// }	
+
+	
+		var testArray = [0, 1, 2];
+		var returnValueOfCopyWithin = copyWithin(testArray, 1, 0);
+		eq(testArray[0], 0);
+		eq(testArray[1], 0);
+		eq(testArray[2], 1);
+
+	},
+	
+	'start should be the index to start copying elements.': function() {
+
+		var testArray = [0, 1];
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1);
+		eq(testArray[0], 1);
+
+	}, 
+	'if start is negative it will be counted from the end.': function() {
+
+		// function copyWithin (array, target, start, end) {
+		// 	var copyWithinArray = [];
+		// 	var startingIndex = 0;
+		// 	var endingIndex = array.length;
+
+		// 	if (target < 0) {
+		// 		target = array.length + target;
+		// 	}
+		// 	if (start) {
+		// 		startingIndex = start;
+		// 	}
+		// 	if (start < 0) {
+		// 		startingIndex = array.length + start;
+		// 	}
+		// 	if (end) {
+		// 		endingIndex = end;
+		// 	}
+			
+		// 	for (var i = startingIndex; i < endingIndex; i++) {
+		// 		copyWithinArray.push(array[i]);
+		// 	}
+			
+		// 	for (var i = 0; i < copyWithinArray.length; i++) {
+		// 		array[i + target] = copyWithinArray[i];
+		// 	}
+		// 	return array;
+		// }	
+
+		var testArray = [0, 1];
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, -1);
+		eq(testArray[0], 1);
+
+	}, 
+	'if no start value it will copy from index 0': function() {
+
+		var testArray = [0, 1];
+		var returnValueOfCopyWithin = copyWithin(testArray, 1);
+		eq(testArray[1], 0);
+	}, 
+ 
+	'end should copy up to but not including end index.': function(){
+
+		var testArray = [0, 1, 2];
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1, 2);
+		eq(testArray[0], 1);
+		eq(testArray[1], 1);
+		eq(testArray[2], 2);
+
+	}, 
+
+	'if end is negative, end will be counted from the end.': function(){
+
+		// function copyWithin (array, target, start, end) {
+		// 	var copyWithinArray = [];
+		// 	var startingIndex = 0;
+		// 	var endingIndex = array.length;
+
+		// 	if (target < 0) {
+		// 		target = array.length + target;
+		// 	}
+		// 	if (start) {
+		// 		startingIndex = start;
+		// 	}
+		// 	if (start < 0) {
+		// 		startingIndex = array.length + start;
+		// 	}
+		// 	if (end) {
+		// 		endingIndex = end;
+		// 	}
+		// 	if (end < 0) {
+		// 		endingIndex = array.length + end;
+		// 	}
+			
+		// 	for (var i = startingIndex; i < endingIndex; i++) {
+		// 		copyWithinArray.push(array[i]);
+		// 	}
+			
+		// 	for (var i = 0; i < copyWithinArray.length; i++) {
+		// 		array[i + target] = copyWithinArray[i];
+		// 	}
+		// 	return array;
+		// }	
+
+		var testArray = [0, 1, 2];
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1, -1);
+		eq(testArray[0], 1);
+		eq(testArray[1], 1);
+		eq(testArray[2], 2);
+	}, 
+	'if no end, it should default to arr.length.': function(){
+
+		var testArray = [0, 1, 2];
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1);
+		eq(testArray[0], 1);
+		eq(testArray[1], 2);
+		eq(testArray[2], 2);
+	}, 
+	'it should paste even when the copied and pasted regions overlap': function(){
+
+		var testArray = [0, 1, 2];
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1);
+		eq(testArray[0], 1);
+		eq(testArray[1], 2);
+		eq(testArray[2], 2);
+	}, 
+	'it does not alter the length of the original array.': function(){
+
+		var testArray = [0, 1, 2];
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1);
+		eq(testArray.length, returnValueOfCopyWithin.length);
+	}, 
+	'it will create properties if necesarry.': function(){
+
+		var testArray = [ , 1, 2];
+		eq(testArray[0], undefined);
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1);
+		eq(testArray.length, 3);
+		eq(testArray[0],1);
+		eq(testArray[1],2);
+		eq(testArray[2],2);
+	},
+	'It should accept array like objects': function(){
+
+		var testArray = {length: 2, 0:0, 1:1};
+		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1);
+		eq(returnValueOfCopyWithin.length, 2);
+		eq(testArray[0],1);
+		eq(testArray[1],1);
+
+	},
+	'if the first argument is not an array-like object it should throw TypeError.': function() {
+
+		var isTypeError = false;
+		try {
+			copyWithin("string");
+		} catch(e) {
+			isTypeError = e instanceof TypeError;
+		}
+		eq(isTypeError, true);
+	}
+
+});
+
+
+
+
+
+</script>

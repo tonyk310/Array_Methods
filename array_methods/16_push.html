@@ -1,0 +1,211 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The push() method adds one or more elements to the end of an array and returns the new length of the array.
+
+SYNTAX
+	arr.push(element1[, ...[, elementN]]);
+
+PARAMETERS
+	elementN
+		The elements to add to the end of the array.
+
+RETURN VALUE
+	The new length property of the object upon which the method was called.
+
+PROTOTYPE
+
+function push (array) {
+	var lengthOfArray = array.length;
+	var numberOfTimesLoopRuns = (lengthOfArray + arguments.length) - 1;
+	
+	for (var i = 0; i < numberOfTimesLoopRuns; i++) {
+		
+		var argumentIndex = (i - lengthOfArray + 1);
+		if (array[i] === undefined) {
+			array[i] = arguments[argumentIndex];
+		}
+	}
+	return array.length;
+}
+
+TESTS
+It should return the length of the array.
+It should append a value to an array.
+It should rely on the length property to determine where to start inserting the given values.   
+If the length proprty cannot be converted into a number the index is 0.
+this includes the possiblty of lenth being non-existent, in which case length will be created.
+*/
+
+
+		function push (array) {
+
+			if (Number.isInteger(array.length) === false) {
+				array.length = 0;
+			}
+
+			var lengthOfArray = array.length;
+			var numberOfTimesLoopRuns = (lengthOfArray + arguments.length) - 1;
+
+
+			
+			for (var i = 0; i < numberOfTimesLoopRuns; i++) {
+				if (array[i] === undefined) {
+					var argumentIndex = (i - lengthOfArray + 1);
+					array[i] = arguments[argumentIndex];
+				}
+			}
+
+			return numberOfTimesLoopRuns;
+		}
+
+tests({
+
+	'It should return the length of the array.': function() {
+
+		var testArray = [1];
+		var returnValueOfPush = push(testArray);
+		eq(testArray.length, returnValueOfPush);
+	},
+
+	'It should append a value to  end original array.': function() {
+
+
+		// function push (array) {
+			
+		// 	var startingIndex = array.length;
+
+		// 	for (var i = startingIndex; i < arguments.length; i++) {
+		// 		array[i] = arguments[i];
+		// 	}
+
+		// 	return startingIndex;
+		// }
+
+		var testArray = [1];
+		var returnValueOfPush = push(testArray, 2);
+		eq(testArray.length === 2, true);
+		eq(testArray[1], 2);
+
+	},
+
+	'It should append multiple values to end original array.': function() {
+
+
+		var testArray = [1];
+		var returnValueOfPush = push(testArray, 2,3);
+		eq(testArray.length === 3, true);
+		eq(testArray[1], 2);
+		eq(testArray[2], 3);
+
+	},
+	
+	'It should rely on the length property to determine where to start inserting the given value.': function() {
+
+		var testArray = [1];
+		eq(testArray.length === 1, true);
+		var returnValueOfPush = push(testArray, 2);
+		eq(testArray.length === 2, true);
+		eq(testArray[1], 2);
+	},
+
+	'If the length property cannot be converted into a number,  the index is 0.': function() {
+
+		// function push (array) {
+
+		// 	if (Boolean(array.length) === false) {
+		// 		array.length = 0;
+		// 	}
+
+		// 	var lengthOfArray = array.length;
+		// 	var numberOfTimesLoopRuns = (lengthOfArray + arguments.length) - 1;
+
+
+			
+		// 	for (var i = 0; i < numberOfTimesLoopRuns; i++) {
+		// 		if (array[i] === undefined) {
+		// 			var argumentIndex = (i - lengthOfArray + 1);
+		// 			array[i] = arguments[argumentIndex];
+		// 		}
+		// 	}
+
+		// 	return numberOfTimesLoopRuns;
+		// }	
+
+		var testArray = {
+			length: "string"
+		};
+	
+		var returnValueOfPush = push(testArray, 0, 0);
+		eq(testArray.length, 0);
+
+		eq(returnValueOfPush, 2);
+
+	},
+	'It should allow for length to be non-existent.': function() {
+		var testArray = {};
+		eq(testArray.length === undefined, true);	
+		var returnValueOfPush = push(testArray, 0, 0);
+		eq(testArray.length, 0);
+
+		eq(returnValueOfPush, 2);
+	},
+	'If non-existent length will be greated.': function() {
+		var testArray = {};
+		eq(testArray.length === undefined, true);	
+		var returnValueOfPush = push(testArray, 0, 0);
+		eq(testArray.length, 0);
+
+		eq(returnValueOfPush, 2);
+	},
+
+	'It should not accept strings as the first argument.': function() {
+
+		function push (array) {
+
+			if (typeof(array) === "string") {
+				throw new TypeError("Strings are not suitable as the first argument because strings are immutable.");
+			}
+
+			if (Number.isInteger(array.length) === false) {
+				array.length = 0;
+			}
+
+			var lengthOfArray = array.length;
+			var numberOfTimesLoopRuns = (lengthOfArray + arguments.length) - 1;
+
+
+			
+			for (var i = 0; i < numberOfTimesLoopRuns; i++) {
+				if (array[i] === undefined) {
+					var argumentIndex = (i - lengthOfArray + 1);
+					array[i] = arguments[argumentIndex];
+				}
+			}
+
+			return numberOfTimesLoopRuns;
+		}
+		var isTypeError = false;
+		try {
+			push("string");
+		} catch(error) {
+			var isTypeError = (error instanceof TypeError);
+		}
+		
+		eq(isTypeError, true);
+
+
+	},
+
+	
+	
+
+});
+
+
+
+
+
+</script>

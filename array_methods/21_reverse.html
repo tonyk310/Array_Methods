@@ -1,0 +1,123 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The reverse() method reverses an array in place. The first array element becomes the last, and the last array element becomes the first.
+
+SYNTAX
+	reverse(array);
+
+RETURN VALUE
+	The reversed array.
+
+PROTOTYPE
+
+function reverse (array) {
+	var reverseArray = [];
+	for (var i = array.length-1; i > -1; i--) {
+		reverseArray.push(array[i]);
+	}
+	for (var i = 0; i < array.length; i++) {
+		array[i] = reverseArray[i];
+	}
+	return array;
+}
+
+TESTS
+
+It should return the original array.
+It should mutate the original array in reverse.
+It can be applied to objects resembing an array which contain a length property reflecting the last in a series of consecutive zero based numerical properties.
+
+*/
+
+function reverse (array) {
+	var reverseArray = [];
+
+	if (typeof(array) !== "object") {
+		throw new TypeError;
+	}
+
+	for (var i = array.length-1; i > -1; i--) {
+		reverseArray.push(array[i]);
+	}
+	for (var i = 0; i < array.length; i++) {
+		array[i] = reverseArray[i]
+	}
+	return array;
+}
+
+tests({
+	'It should return the original array.': function() {
+
+		function reverse (array) {
+			return array;
+		}
+
+		var testArray = [0];
+		var returnValueOfReverse = reverse(testArray);
+		eq(testArray, returnValueOfReverse);
+	},
+
+	'It should mutate the original array in reverse.': function() {
+
+		var testArray = [0,1,2];
+		reverse(testArray);
+		eq(testArray[0], 2);
+		eq(testArray[1], 1);
+		eq(testArray[2], 0);
+	},
+	
+	'It can be applied to objects resembing an array which contain a length property reflecting the last in a series of consecutive zero based numerical properties.': function() {
+
+
+		var testObj = {0:0, 1:1, length: 2};
+		reverse(testObj);
+		eq(testObj[0], 1);
+		eq(testObj[1], 0);
+	},
+	'If length property of array like object can be coerced into a number it should reverse.': function() {
+
+		var testObj = {0:0, 1:1, length: "2"};
+		reverse(testObj);
+		eq(testObj[0], 1);
+		eq(testObj[1], 0);
+	},
+	'If length property of array like object can not be coerced into a number it should not reverse.': function() {
+
+		var testObj = {0:0, 1:1, length: "two"};
+		reverse(testObj);
+		eq(testObj[0], 0);
+		eq(testObj[1], 1);
+	},
+	'it should not ignore holes': function() {
+
+		var testArray = [,0,,2];
+		reverse(testArray);
+		eq(testArray[0],2);
+		eq(testArray[1], undefined);
+		eq(testArray[2], 0);
+		eq(testArray[3], undefined);
+	},
+	
+	'It should return TypeError is the first argument is not an array like object': function() {
+
+		var isTypeError = false;
+		try {
+			reverse("string");
+		} catch(e) {
+			isTypeError = e instanceof TypeError;
+		}
+
+
+	}
+	
+
+});
+
+
+
+
+
+</script>

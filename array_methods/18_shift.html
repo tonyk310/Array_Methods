@@ -1,0 +1,125 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The shift() method removes the first element from an array and returns that removed element. This method changes the length of the array.
+
+SYNTAX
+	shift(array);
+
+RETURN VALUE
+	The removed element from the array; undefined if the array is empty.
+
+PROTOTYPE
+
+function shift (array) {
+	var elementToShift = array[0];
+	
+	array.splice(0,1);
+	console.log(array);
+	return elementToShift;
+}
+
+TESTS
+It should return index 0 in the array.
+It should return undefined if the array is empty.
+It should remove index 0 from the array.
+It should shift the values of the the consecutive indexes down.
+It should change the length of the array.
+It should return TypeError if the argumemnt is not an array.
+Objects which do  contain a length property reflecting the last in a series of consecutive, zero-based numerical properties may  behave in any meaningful manner.
+
+*/
+		function shift (array) {
+			var elementToReturn = array[0];
+			array.splice(0, 1);
+			return elementToReturn;
+		}
+
+tests({
+	'It should return index 0 in the array.': function() {
+
+		// function shift (array) {
+		// 	return array[0];
+		// }
+
+		var testArray = [0];
+		var returnValueOfShift = shift(testArray);
+		eq(returnValueOfShift, 0);
+	},
+
+	'It should return undefined if the array is empty.': function() {
+
+
+
+		var testArray = [];
+		var returnValueOfShift = shift(testArray);
+		eq(returnValueOfShift, undefined);		
+	},
+	
+	'It should remove index 0 from the array.': function() {
+
+		// function shift (array) {
+		// 	var elementToReturn = array[0];
+		// 	array.splice(0, 1);
+		// 	return elementToReturn;
+		// }
+
+		var testArray = [0];
+		eq(testArray[0], 0);
+		var returnValueOfShift = shift(testArray);
+		eq(testArray[0], undefined);
+	},
+
+	'It should shift the values of the the consecutive indexes down.': function() {
+
+
+		var testArray = [0, 1];
+		eq(testArray[0], 0);
+		var returnValueOfShift = shift(testArray);
+		eq(testArray[0], 1);	
+
+	},
+	'It should change the length of the array.': function() {
+
+		var testArray = [0, 1];
+		eq(testArray.length, 2);
+		var returnValueOfShift = shift(testArray);
+		eq(testArray.length, 1);
+
+	},
+	'It should return TypeError if the argumemnt is not an array.': function() {
+
+		var isTypeError = false;
+		try {
+			shift("string");
+		} catch(e) {
+			isTypeError = e instanceof TypeError;
+		}
+		eq(isTypeError, true);
+
+	},
+	// 'Objects which do contain a length property reflecting the last in a series of consecutive, zero-based numerical properties may  behave in any meaningful manner.': function() {
+
+
+	// 	var testArray = {
+	// 		0: 0,
+	// 		length: 1
+	// 	};
+	// 	eq(testArray.length, 1);
+	// 	var returnValueOfShift = shift(testArray);
+	// 	eq(returnValueOfShift, 0);
+	// 	eq(testArray.length, 0);
+
+
+	// },
+
+
+});
+
+
+
+
+
+</script>

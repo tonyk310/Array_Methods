@@ -1,0 +1,176 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The unshift() method adds one or more elements to the beginning of an array and returns the new length of the array.
+
+SYNTAX
+	unshift(array);
+
+PARAMETERS
+	elementN
+    	The elements to add to the front of the arr. 
+
+RETURN VALUE
+	The new length property of the object upon which the method was called.
+
+PROTOTYPE
+
+function unshift (array) {
+	var unshiftArray = [];
+	var lengthOfArray = array.length;
+	var argumentsLength = arguments.length - 1;
+	var totalLength = lengthOfArray + argumentsLength;
+
+	for (var i = 0; i < array.length; i++) {
+		unshiftArray[i] = array[i];
+	}
+
+
+	for (var i = 0; i < totalLength; i++) {
+		
+		if (i < argumentsLength) {
+		
+			array[i] = arguments[i+1];	
+			
+
+		} else {
+
+			var unshiftArrayIndex = i - argumentsLength;
+			array[i] = unshiftArray[unshiftArrayIndex];
+		}
+	}
+	return totalLength;
+}
+
+TESTS
+It should return the new length of the new array.
+It should add one element to the beginning of the array.
+It should accept multiple elements into the array
+It should insert multiple elements in the exact order they are passed in as paramaters to the function.
+If the function is called multiple times the last call should be the first in the array.
+It should only accept objects as the first argument.
+*/
+
+function unshift (array) {
+	// first we have to create a new array filled with the old array.
+
+	if (!Array.isArray(array)) {
+		throw new TypeError("First argument must be an array.");
+	}
+
+	var originalArray = [];
+	var argumentsLength = arguments.length - 1;
+	var totalLength = array.length + argumentsLength;
+
+
+	for (var i = 0; i < array.length; i++) {
+		originalArray[i] = array[i];
+	}
+
+	for (var i = 0; i < totalLength; i++) {
+		if (i < argumentsLength) {
+			var argumentsIndex = i + 1;
+			array[i] = arguments[argumentsIndex];
+		} else {
+			var originalArrayIndex = i - argumentsLength;
+			array[i] = originalArray[originalArrayIndex];
+		}
+	}
+	return totalLength;
+}
+
+
+tests({
+	'It should return the new length of the array.': function() {
+
+		// function unshift (array) {
+		// 	var originalArray = [];
+		// 	var argumentsLength = arguments.length - 1;
+		// 	var totalLength = array.length + argumentsLength;
+
+		// 	for (var i = 0; i < array.length; i++) {
+		// 		originalArray[i] = array[i];
+		// 	}
+
+		// 	for (var i = 0; i < totalLength; i++) {
+		// 		if (i < argumentsLength) {
+		// 			var argumentsIndex = i + 1;
+		// 			array[i] = arguments[argumentsIndex];
+		// 		} else {
+		// 			var originalArrayIndex = i - argumentsLength;
+		// 			array[i] = originalArray[originalArrayIndex];
+		// 		}
+		// 	}
+		// 	return totalLength;
+		// }
+
+		var testArray = [1];
+		eq(testArray.length, 1);
+		var returnValueOfUnshift = unshift(testArray, 0);
+		eq(testArray.length, 2);
+
+	},
+
+	'It should add an element to the beginning of the array.': function() {
+
+
+		var testArray = [1];
+		eq(testArray[0], 1);
+		var returnValueOfUnshift = unshift(testArray, 0);
+		eq(testArray[0], 0);	
+	},
+	
+	'It should accept multiple elements into the array': function() {
+
+		var testArray = [];
+		eq(testArray[0], undefined);
+		var returnValueOfUnshift = unshift(testArray, 0, 1, 2);
+		eq(testArray[0], 0);	
+		eq(testArray[1], 1);	
+		eq(testArray[2], 2);	
+
+	},
+
+	'It should insert multiple elements in the exact order they are passed in as paramaters to the function.': function() {
+		var testArray = [];
+		var littleArray = [2,3];
+		eq(testArray[0], undefined);
+		var returnValueOfUnshift = unshift(testArray, 0, 1, littleArray);
+		eq(testArray[0], 0);	
+		eq(testArray[1], 1);	
+		eq(testArray[2], littleArray);
+	},
+	'If the function is called multiple times the last call should be the first in the array.': function() {
+
+		var testArray = [];
+		eq(testArray[0], undefined);
+		var returnValueOfUnshift = unshift(testArray, 0);
+		var returnValueOfUnshift = unshift(testArray, 1);
+		var returnValueOfUnshift = unshift(testArray, 2);
+		eq(testArray[0], 2);
+		eq(testArray[1], 1);
+		eq(testArray[2], 0);
+	},
+	'It should only accept arrays as the first argument, otherwise throw typeError.': function() {
+
+		var isTypeError = false;
+		try {
+			unshift("string", 0);
+		} catch(e) {
+			isTypeError = e instanceof TypeError;
+		}
+		eq(isTypeError, true);
+
+	}
+	
+	
+
+});
+
+
+
+
+
+</script>

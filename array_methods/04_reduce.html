@@ -1,0 +1,641 @@
+<script src="../tinytest.js"></script>
+<script>
+
+/*
+The reduce() method applies a function against an accumulator and each value of the array (from left to right) to reduce a single value.  
+
+The reduce() method executes a reducer function (which you provide) on each element of the array, resulting in a single output value.
+
+The reducer function takes 4 arguments:
+
+  Accumulator (acc)
+  Current Value (cur)
+  Current index (idx)
+  Source Array (src)
+
+Your reducer function's returned value is assigned to the accumulator, whose value is remembered accross each iteration throughout the array, and ultimately becomes the final single resulting value.
+
+SYNTAX
+arr.reduce(callback( accumulator, currentValue[, index[, array]] )[, initialValue]);  
+
+PARAMETERS
+callback
+  accumulator
+  currentValue
+  index
+  array
+initialValue
+
+RETURN VALUE
+the single value that results from the reduction
+
+DESCRIPTION
+Executes the callback once for each element present in the array
+Excludes holes in the array (e.g. [ hole, 1])
+
+CASE A: initialValue is provided.
+  -accumulator will be equal to initialValue.
+  -currentValue will be equal to the first value in the array.
+  -callback will begin at index 0.
+
+CASE B: initialValue is not provided.
+  -accumulator will be equal to first value in the array
+  -currentValue will be equal to the second value in the array.
+  -callback will begin at index 1, which is the second element.
+
+EDGE CASES
+  -If array is empty and no initialValue was provided, TypeError should be thrown.
+    e.g. reduce([], callback); ==> TypeError
+
+  -If array has one element (regardless of position) and no initialValue was provided, or if initialValue is provided but the array is empty, the sole value would be returned, without calling callback.
+    e.g.  reduce([hole, 1], function callback(){}); callback.
+          reduce([1], function callback(){});
+          ==> return 1 without calling 
+
+    e.g.  reduce([], function callback(){}, initialValue); 
+          reduce([ *hole* ], function callback(){}, initialValue)
+          ==> return initialValue without calling callback
+*/
+
+// REQUIREMENTS
+
+
+
+// If initialValue is present, accumulator should start with initialValue.
+// If initialValue is present, currentValue should start with array[0].
+// If initialValue is present, callback will start at index 0.
+
+// If initialValue is not present, accumulator should start with array[0].
+// If initialValue is not present, currentValue array[1].
+// If initialValue is not present, callback will start at index 1.
+
+// If initialValue is present, and array is empty, return initialValue without calling callback.
+// If initialValue is not present, and array has one element, return only element without calling callback.
+
+// It should reduce.
+// It should skip holes.
+// If initialValue is not present, and array is empty, throw TypeError.
+// It should pass array as fourth argument to callback.
+
+// function reduce(array, callback, startingValue) {
+
+//   // if startingValue is present and an empty array is passed return starting value.
+//   if (arguments === 3 && Array.isArray(array) && array.length) {
+//     return startingValue;
+//   }
+  
+//   var currentValue = 0;
+//   var accumulator = startingValue;
+
+//   // if startingValue is not present
+//   if(arguments.length < 3) {
+//     // then set accumulator to begin at the first index in the array
+//     accumulator = array[0];
+//     // then set currentValue to increase by 1.  which affects i
+//     currentValue++;
+
+//     // and there is one element in the array
+//     if (array.length === 1) {
+//       return array[0];
+//     }
+//   }
+  
+
+//   for (var i = currentValue; i < array.length; i++) {
+//     accumulator = callback(accumulator, array[i], i);
+//   }
+//   return accumulator;
+// }
+
+
+    function reduce(array, callback, initialValue) {
+
+      var startingIndex = 0;
+      var accumulator = initialValue;
+      
+      // NO initial value
+      if (arguments.length < 3) {
+
+        if (Object.keys(array).length === 0) {
+          throw new TypeError();
+        }
+        
+        if (Object.keys(array).length === 1) {
+          var singleIndex = Object.keys(array)[0]; // [5]
+          var singleElementArray = array[singleIndex];
+          return singleElementArray;
+        }
+
+        while ((startingIndex in array) === false && (startingIndex < array.length)) {
+          startingIndex++;
+        }
+
+        accumulator = array[startingIndex];
+        startingIndex++;
+      //  If there is an initalValue
+      } else {
+        if (Object.keys(array).length === 0) {
+          return initialValue;
+        }
+      }
+
+      for (var i = startingIndex; i < array.length; i++) {
+        if (i in array) {
+          accumulator = callback(accumulator, array[i], i, array);  
+        }
+      }
+
+      return accumulator;
+    }
+// ******************************************************************
+debugger;
+// tests({
+TinyTest.run({
+  
+  'If initialValue is present, callback should run array.length times.': function() {
+
+//     function reduce(array, callback, initialValue) {
+//       for (var i = 0; i < array.length; i++) {
+//         callback();
+//       }
+//     }
+// // ****************************************************************** 
+ 
+    var numberOfTimesCallbackHasRun = 0;
+    var testArray = [1];
+    reduce(testArray, function(){
+      numberOfTimesCallbackHasRun++;
+    }, 0);
+    TinyTest.assertEquals(numberOfTimesCallbackHasRun, 1);
+    eq(testArray.length, 1);
+  },
+  'If initialValue is not present, callback should run array.length - 1 times.': function() {
+
+    // function reduce(array, callback) {
+
+    //   // this is where the index will start
+    //   var startingIndex = 0;
+
+    //   if (arguments.length < 3) {
+    //     // if there is no initialValue then you want the position to start not at 0 but at the second index.
+    //     startingIndex++;
+    //   }
+    //   // when you dont provide an initialValue you dont want the lenght ot the array to shorten you want to increase the index by one.
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     callback();
+    //   }
+    // }
+
+    var numberOfTimesCallbackHasRun = 0;
+    var testArray = [1,2];
+    reduce(testArray, function(){
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 1);
+    eq(testArray.length, 2);
+    
+  },
+
+  '1. If initialValue is present, accumulator should start with initialValue.': function() {
+   
+
+    // function reduce(array, callback, initialValue) {
+    //   var startingIndex = 0;
+    //   // set startingValue equal to initialValue
+    //   var startingValue = initialValue;
+
+    //   if (arguments.length < 3) {
+    //     startingIndex++;
+    //   }
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     // place startingValue as first argument
+    //     callback(startingValue);
+    //   }
+    // }
+// ******************************************************************   
+   reduce([1], function callback(accumulator) {
+    eq(accumulator, 0);
+   }, 0);
+
+  },
+  '2. If initialValue is present, currentValue should start with array[0].': function() {
+    // function reduce(array, callback, initialValue) {
+    //   var startingIndex = 0;
+    //   // set startingValue equal to initialValue
+    //   var accumulator = initialValue;
+    //   var currentValue = array[0];
+
+    //   if (arguments.length < 3) {
+    //     startingIndex++;
+    //   }
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     // place startingValue as first argument
+    //     callback(accumulator, currentValue);
+    //   }
+    // }
+// ****************************************************************** 
+
+    reduce([1], function callback(accumulator, currentValue) {
+      eq(currentValue, 1);
+    }, 0);
+
+  },
+  '3. If initialValue is present, callback will start at index 0.': function() {
+
+    // function reduce(array, callback, initialValue) {
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+    //   // currentValue is set to the startingInde
+    //   var currentValue = array[i];
+
+    //   if (arguments.length < 3) {
+    //     startingIndex++;
+    //   }
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     callback(accumulator, currentValue, i);
+    //   }
+    // }
+// ******************************************************************     
+    reduce([1], function callback(accumulator, currentValue, index) {
+      eq(index, 0);
+    }, 0);
+  },
+  '4. If initialValue is not present, accumulator should start with array[0].': function() {
+
+    // function reduce(array, callback, initialValue) {
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+
+    //   // if initialValue is not present
+    //   if (arguments.length < 3) {
+    //     // the accumulator is set to the starting index
+    //     accumulator = array[startingIndex];
+    //     startingIndex++;
+    //   }
+
+    //   var currentValue = array[i];
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     callback(accumulator, currentValue, i);
+    //   }
+    // }
+// ****************************************************************** 
+
+    reduce([1,2], function callback(accumulator) {
+      eq(accumulator, 1);
+    });
+
+  },
+  '5. If initialValue is not present, currentValue is set to array[1].': function() {
+
+    // function reduce(array, callback, initialValue) {
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   if (arguments.length < 3) {
+    //     accumulator = array[startingIndex]; // 1
+    //     startingIndex++; // 1
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     callback(accumulator, array[i], i);
+    //   }
+    // }
+// ****************************************************************** 
+    reduce([1,2], function callback(accumulator, currentValue) {
+      eq(currentValue, 2);
+    });    
+
+  },
+  '6. If initialValue is not present, callback will start at index 1.': function() {
+    
+    // function reduce(array, callback, initialValue) {
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   if (arguments.length < 3) {
+    //     accumulator = array[startingIndex]; // 1
+    //     startingIndex++; // 1
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     callback(accumulator, array[i], i);
+    //   }
+    // }
+// ****************************************************************** 
+    reduce([1,2], function callback(accumulator, currentValue, index) {
+      eq(index, 1);
+    });
+  },
+  '7. If initialValue is present, and array is empty, return initialValue without calling callback.': function() {
+    
+    // function reduce(array, callback, initialValue) {
+
+      
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   if (arguments.length < 3) {
+    //     accumulator = array[startingIndex];
+    //     startingIndex++;
+    //   //  If there is an initalValue
+    //   } else {
+    //     // Object.keys() creates a new object with the keys as the value.
+    //     if (Object.keys(array).length === 0) {
+    //       return initialValue;
+    //     }
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     callback(accumulator, array[i], i);
+    //   }
+    // }
+// ****************************************************************** 
+    var numberOfTimesCallbackHasRun = 0;
+    var reduction = reduce([,,], function callback() {
+      numberOfTimesCallbackHasRun++;
+    }, 0);
+    eq(reduction, 0);
+    eq(numberOfTimesCallbackHasRun, 0);
+    
+    // an object is a collection of properties.  A property is an association between a key and a value.  
+    // to determine a property in an object use the 'in' operator to return true.
+      // property in object
+    // var myObject = {
+    //   0: 'one',
+    //   2: 'three'
+    // };
+
+    // Object.keys() will return a new array containing all the keys from the originalarray
+    
+
+  },
+  '8. If startingValue is not present, and array has one element, return only element without calling callback.': function() {
+    
+    // function reduce(array, callback, initialValue) {
+
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   if (arguments.length < 3) {
+    //     accumulator = array[startingIndex];
+    //     startingIndex++;
+
+    //     if (Object.keys(array).length === 1) {
+    //       // so you might be tempted to simply:
+    //         // return array[0];
+    //       // but we have to be aware of holes and there might not be something at position 0, that might be a hole.  therefore the statement will fail.
+    //       // so then how do we get the 'index' of the element?
+    //       // use Object.keys to generate a new array consiting of the indexes
+    //       // Object.keys() will return a new array containing all the keys from the originalarray
+    //       var singleIndex = Object.keys(array)[0]; // [5]
+    //       var singleElementArray = array[singleIndex];
+    //       return singleElementArray;
+
+    //     }
+    //   //  If there is an initalValue
+    //   } else {
+    //     // Object.keys() creates a new object with the keys as the value.
+    //     if (Object.keys(array).length === 0) {
+    //       return initialValue;
+    //     }
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     callback(accumulator, array[i], i);
+    //   }
+    // }
+// ******************************************************************
+
+    var numberOfTimesCallbackHasRun = 0;
+    var reduction = reduce([,,,,1], function callback() {
+      numberOfTimesCallbackHasRun++;
+    });
+    eq(numberOfTimesCallbackHasRun, 0);
+    eq(reduction, 1);
+  },
+  '9. It should reduce.': function() {
+    
+    // function reduce(array, callback, initialValue) {
+
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   if (arguments.length < 3) {
+    //     accumulator = array[startingIndex];
+    //     startingIndex++;
+
+    //       if (Object.keys(array).length === 1) {
+    //         var singleIndex = Object.keys(array)[0]; // [5]
+    //         var singleElementArray = array[singleIndex];
+    //         return singleElementArray;
+    //       }
+    //   //  If there is an initalValue
+    //   } else {
+    //     if (Object.keys(array).length === 0) {
+    //       return initialValue;
+    //     }
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     accumulator = callback(accumulator, array[i], i);
+    //   }
+
+    //   return accumulator;
+    // }
+// ******************************************************************
+  
+  var reduction = reduce([1,2], function callback(a,b){
+    return a + b;
+  }, 0);
+  eq(reduction, 3);
+
+  },
+  '10. If initialValue is present, It should skip holes.': function() {
+
+    // function reduce(array, callback, initialValue) {
+
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   if (arguments.length < 3) {
+    //     accumulator = array[startingIndex];
+    //     startingIndex++;
+
+    //       if (Object.keys(array).length === 1) {
+    //         var singleIndex = Object.keys(array)[0]; // [5]
+    //         var singleElementArray = array[singleIndex];
+    //         return singleElementArray;
+    //       }
+    //   //  If there is an initalValue
+    //   } else {
+    //     if (Object.keys(array).length === 0) {
+    //       return initialValue;
+    //     }
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     // how to skip holes?
+    //     // call (property in object)
+    //     // if the property is in the object then return true and run the callback.
+    //     if (i in array) {
+    //       accumulator = callback(accumulator, array[i], i);  
+    //     }
+    //   }
+
+    //   return accumulator;
+    // }
+// ******************************************************************
+
+    var reduction = reduce([,1, , 2], function callback(a,b) {
+      return a + b;
+    }, 0);
+    eq(reduction, 3);
+
+  },
+  '10.2. If initialValue is not present, It should skip holes.': function() {
+     
+    //  function reduce(array, callback, initialValue) {
+
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   if (arguments.length < 3) {
+        
+    //     if (Object.keys(array).length === 1) {
+    //       var singleIndex = Object.keys(array)[0]; // [5]
+    //       var singleElementArray = array[singleIndex];
+    //       return singleElementArray;
+    //     }
+
+    //     while ((startingIndex in array) === false && startingIndex < array.length) {
+    //       startingIndex++;
+    //     }
+
+    //     accumulator = array[startingIndex];
+    //     startingIndex++;
+    //   //  If there is an initalValue
+    //   } else {
+    //     if (Object.keys(array).length === 0) {
+    //       return initialValue;
+    //     }
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     if (i in array) {
+    //       accumulator = callback(accumulator, array[i], i);  
+    //     }
+    //   }
+
+    //   return accumulator;
+    // }
+// ******************************************************************   
+
+    var reduction = reduce([,1,,2,,,,], function callback(accumulator, currentValue){
+      return accumulator + currentValue;
+    });
+    eq(reduction, 3);
+
+  },
+  '11. If initialValue is not present, and array is empty, throw TypeError.': function() {
+
+    //  function reduce(array, callback, initialValue) {
+
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   // NO initial value
+    //   if (arguments.length < 3) {
+
+    //     if (Object.keys(array).length === 0) {
+    //       throw new TypeError("Reduce of empty array with no initial value");
+    //     }
+        
+    //     if (Object.keys(array).length === 1) {
+    //       var singleIndex = Object.keys(array)[0]; // [5]
+    //       var singleElementArray = array[singleIndex];
+    //       return singleElementArray;
+    //     }
+
+    //     while ((startingIndex in array) === false && (startingIndex > array.length)) {
+    //       startingIndex++;
+    //     }
+
+    //     accumulator = array[startingIndex];
+    //     startingIndex++;
+    //   //  If there is an initalValue
+    //   } else {
+    //     if (Object.keys(array).length === 0) {
+    //       return initialValue;
+    //     }
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     if (i in array) {
+    //       accumulator = callback(accumulator, array[i], i);  
+    //     }
+    //   }
+
+    //   return accumulator;
+    // }
+// ******************************************************************   
+
+      var isTypeError = false;
+      try {
+        reduce([], function callback(){});
+      } catch(error) {
+        isTypeError = (error instanceof TypeError);
+      }
+      eq(isTypeError, true);
+
+  },
+  '12. It should pass array as fourth argument to callback.': function() {
+    // function reduce(array, callback, initialValue) {
+
+    //   var startingIndex = 0;
+    //   var accumulator = initialValue;
+      
+    //   // NO initial value
+    //   if (arguments.length < 3) {
+
+    //     if (Object.keys(array).length === 0) {
+    //       throw new TypeError();
+    //     }
+        
+    //     if (Object.keys(array).length === 1) {
+    //       var singleIndex = Object.keys(array)[0]; // [5]
+    //       var singleElementArray = array[singleIndex];
+    //       return singleElementArray;
+    //     }
+
+    //     while ((startingIndex in array) === false && (startingIndex > array.length)) {
+    //       startingIndex++;
+    //     }
+
+    //     accumulator = array[startingIndex];
+    //     startingIndex++;
+    //   //  If there is an initalValue
+    //   } else {
+    //     if (Object.keys(array).length === 0) {
+    //       return initialValue;
+    //     }
+    //   }
+
+    //   for (var i = startingIndex; i < array.length; i++) {
+    //     if (i in array) {
+    //       accumulator = callback(accumulator, array[i], i, array);  
+    //     }
+    //   }
+
+    //   return accumulator;
+    // }
+// ****************************************************************** 
+
+      var testArray = [1,2,3];
+      reduce(testArray, function callback(accumulator, currentValue, index, array) {
+        eq(array, testArray);
+      }, 0);
+  }
+
+});
+</script>

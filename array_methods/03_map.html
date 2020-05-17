@@ -1,0 +1,257 @@
+<script src="../tinytest.js"></script>
+<script>
+
+// the map method creates a NEW array populated with the results of calling a provided function on every element in the calling array
+
+
+// SYNTAX
+  // let new_array = arr.map(function callback(currentValue [, index[, array]]) {
+    // return element for new_array
+  // }[, thisArg]);
+
+
+/*
+PARAMETERS
+  
+  callback
+    -function that is called for every element of arr.  Each time callback executes the returned value is added to new_array
+    -the callback function accepts the following arguments
+
+    currentValue
+      -the current value being processed in the ray
+    index
+    array
+
+  thisArg
+
+RETURN VALUE
+  -A new array with each element being the result of the callback function.
+
+*/ 
+
+
+// Example 1: 
+// it should run the callback array.length times
+// map([1,2,3], function callback() {});
+
+// Example 2: 
+// it should have access to currentValue in the array
+// map([1,2,3], function(currentValue) {
+// 	console.log(currentValue);
+// });
+
+// Example 3:
+// It should pass in the index of the currentValue in the array as the second argument of the callback function.
+// map([1,2,3], function(element, index) {
+//   console.log(index);
+// });
+
+// Example 4:
+// It should pass in the The orignalArray as the third argument into the callback function.
+// map([1,2,3], function(element, index, originalArray) {
+//   console.log(originalArray);
+// });
+
+// Example 5:
+// ******************************************************************
+// BIND
+// the bind() method creates a new function that, when called, has its 'this' keyword set to the provided value, // with a given sequence of arguments preceding any provided when the new function is called.
+// ****************************************************************** 
+// ******************************************************************
+// It should pass in the optionalThisArg when executing the callback.
+// map([1], function(){
+  // console.log(this.name);
+// }, {name: 'gordon'});
+
+// Example 6:
+// var originalArray = [1,2,3];
+// var mappedArray = map(originalArray, function callback() {});
+// originalArray !== mappedArray
+
+// Example 7:
+// var originalArray = [1,2,3];
+// var mappedArray = map(originalArray, function callback(currentValue) {
+  // return currentValue * 2;
+// });
+// expect mappedArray = [2,4,6];
+
+function map(array, callback, thisArg) {
+
+  var mapCallback = callback;
+  if(thisArg){
+    mapCallback = callback.bind(thisArg);
+  }
+
+  var arrayToReturn = [];
+  for(var i = 0; i < array.length; i++) {
+    arrayToReturn.push(mapCallback(array[i], i, array));
+  }
+
+  
+  return arrayToReturn;
+}
+
+
+// ****************************************************************** 
+// ******************************************************************
+
+tests({
+
+  '1.  It should run the callback array.length times.': function() {
+
+
+
+	// ******************************************
+      var numberOfTimesCallbackRuns = 0;
+      map([1,2,3], function callback() {
+        numberOfTimesCallbackRuns++;
+      });
+      eq(3, numberOfTimesCallbackRuns);
+
+  },
+
+  '2.  It should pass in the ith element of the array as the first argument into the callback function.': function() {
+
+
+
+// *********************************************
+      map([1], function callback(currentValue) {
+        eq(currentValue, 1);
+      });
+
+
+// *********************************************
+// *********************************************
+  	
+
+  },
+
+  '3: It should pass in the index of the currentValue of the array as the second argument into the callback function.': function() {
+
+
+
+// *********************************************
+      map([1], function callback(currentValue, index) {
+        eq(index, 0);
+      });
+// *********************************************
+// *********************************************    
+
+
+  },
+
+  '4. It should pass in the originalArray as the third argument into the callback function.': function() {
+
+
+
+// *********************************************
+      var testArray = [1,2,3];
+      map([], function callback(element, index, originalArray) {
+        eq(originalArray, testArray);
+      });
+// *********************************************
+// *********************************************     
+    
+
+  },
+
+  '5.  It should accept a configurable this object': function() {
+
+
+// *********************************************
+      var originalArray = [1];
+      var optionalThisArg = {description: 'you should be able to access me within callback'};
+      map(originalArray, function callback() {
+        eq(this.description, "you should be able to access me within callback");
+      }, optionalThisArg);
+
+
+// *********************************************
+// *********************************************     
+
+
+  },
+
+  '6. It should return a new array': function() {
+
+// *********************************************
+
+      
+      var mappedArray = map([1], function callback() {});
+      eq(Array.isArray(mappedArray), true);
+
+// *********************************************
+// *********************************************     
+
+
+  },
+
+  '7. It should return an different array from originalArray': function() {
+
+
+// *********************************************
+
+      var originalArray = [1];
+      var mappedArray = map(originalArray, function callback() {});
+      eq(mappedArray !== originalArray, true);
+
+// *********************************************
+// *********************************************     
+
+
+  },
+
+  '8. It should return a new array with only elements which have been mapped / transformed by callback.': function() {
+
+// *********************************************
+
+      var originalArray = [1];
+      var mappedArray = map(originalArray, function callback(currentValue) {
+        return currentValue * 4;
+      });
+      eq(mappedArray[0], 4);
+
+// *********************************************
+// *********************************************     
+
+
+  },
+
+  '9. It should skip the any missing elements in the array.': function() {
+
+
+      function map(array, callback, thisArg) {
+
+        var arrayToReturn = [];
+        for(var i = 0; i < array.length; i++) {
+          
+          // here is where it will skip holes,
+          // this if statement with a special SYNTAX will ask,
+          // if the position in the array is true, ie it is not a hole it will run the if statement
+          // inside the if statement, it sets that position in the array to return to the returned value of the callback
+          if(i in array) {
+            arrayToReturn[i] = callback(array[i], i, array);
+          }
+          
+        }
+
+        return arrayToReturn;
+      }
+// *********************************************
+
+      var weirdArray = [/* hole */, 1];
+      var mappedArray = map(weirdArray, function double(currentValue) {
+        return currentValue * 2;
+      });
+      // eq(mappedArray[0], 2);
+      // eq(mappedArray.length, 1);
+     console.log(mappedArray);
+      eq(0 in mappedArray, false);
+// *********************************************
+// *********************************************     
+
+
+  }
+
+});
+</script>

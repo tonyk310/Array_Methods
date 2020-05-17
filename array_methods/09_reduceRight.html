@@ -1,0 +1,410 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+
+The reduceRight() method applies a function against an accumulator and each value of the array (from right-to-left) to reduce it to a single value.
+
+SYNTAX
+	arr.reduceRight(callback(accumulator, currentValue[, index[, array]])[, initialValue])
+
+PARAMETERS
+	callback
+		accumulator
+		currentValue
+		index
+		array
+	initialValue
+
+RETURN VALUE
+	The value that results from the reduction
+
+TESTS:
+CALLBACK:
+If initialValue is provided it should run the callback array.length times.
+If initialValue is provided it should pass initialValue as the first argument to the callback.
+If initialValue is provided it should pass the last index as the second argument to callback.
+
+If no initialValue is provided it should run array.length-1 times.
+If no initialValue is provided it should pass the last index of the array as the first argument to callback.
+If no initialValue is provided it should pass the second-to-last index of the array as the second argument to callback.
+
+It should pass current index as the third argument to callback.
+It should pass the array as the fourth argument to callback.
+
+INITIAL VALUE PROVIDED:
+If initialValue is provided and the array is empty it should return the solo value without calling callback.
+If initialValue is provided it should skip holes.
+
+NO INITIAL VALUE PROVIDED:
+If no initialValue is provided and the array has only one element, it should return that element without calling callback.
+If no initialValue is provided it should skip holes.
+
+It should reduce.
+
+It should throw TypeError if the array is empty and no initialValue is provided.
+
+PROTOTYPE
+function reduceRight (array, callback, initialValue) {
+	var startingIndex = array.length-1;
+	// initialValue present;
+	if (initialValue) {
+		var accumulator = initialValue;
+	// no initialValue present 
+	} else {
+		accumulator = array[array.length-1];
+		startingIndex--;
+	}
+	for (var i = startingIndex; i > -1; i--) {
+		accumulator = callback(accumulator, array[i]);
+	}
+	return accumulator;
+}
+
+*/
+
+		function reduceRight (array, callback, initialValue) {
+			var startingIndex = array.length-1;
+			var resultSoFar;
+
+			// initialValue provided
+			if (arguments.length > 2) {
+				resultSoFar = initialValue;
+			// no initialValue provided
+			} else {
+				startingIndex--;
+				resultSoFar = array[array.length-1];
+			}
+
+
+			for (var i = startingIndex; i >= 0; i-- ) {
+				if (i in array) {
+					resultSoFar = callback(resultSoFar, array[i], i, array);
+				}
+			}
+			return resultSoFar;
+		}
+		// ****************************************************	
+
+
+tests({
+	'If initialValue is provided it should run the callback array.length times.': function() {
+	
+		var numberOftimesTheCallbackHasRun = 0;
+		reduceRight([1,2,3], function callback () {
+			numberOftimesTheCallbackHasRun++;
+		}, 0);
+		eq(numberOftimesTheCallbackHasRun, 3);
+	},
+
+	'If initialValue is provided it should pass initialValue as the first argument (accumulator) to the callback.': function() {
+
+		// function reduceRight (array, callback, initialValue) {
+		// 	for (var i = array.length-1; i >= 0; i-- ) {
+		// 		callback(initialValue);
+		// 	}
+		// }
+		// ****************************************************
+		reduceRight([1], function callback (accumulator) {
+			eq(accumulator, 0);
+		}, 0);
+	},
+	
+	'If initialValue is provided it should pass the last index as the second argument (currentValue) to callback.': function() {
+
+
+		// function reduceRight (array, callback, initialValue) {
+		// 	for (var i = array.length-1; i >= 0; i-- ) {
+		// 		callback(initialValue, array[i]);
+		// 	}
+		// }
+		// // ****************************************************
+		reduceRight([1], function (accumulator, currentValue) {
+			eq(currentValue, 1);
+		}, 0);
+	},
+
+	'If no initialValue is provided it should run array.length-1 times.': function() {
+		
+
+		// function reduceRight (array, callback, initialValue) {
+		// 	var startingIndex = array.length-1;
+		// 	// initialValue provided
+		// 	if (arguments.length > 2) {
+
+		// 	// no initialValue provided
+		// 	} else {
+		// 		startingIndex--;
+		// 	}
+
+		// 	for (var i = startingIndex; i >= 0; i-- ) {
+		// 		callback(initialValue, array[i]);
+		// 	}
+		// }
+		// // ****************************************************
+
+		var numberOftimesTheCallbackHasRun = 0;
+		reduceRight([1,2,3], function callback () {
+			numberOftimesTheCallbackHasRun++;
+		} );
+		eq(numberOftimesTheCallbackHasRun, 2);
+	},
+	
+	'If no initialValue is provided it should pass the value of last index of the array as the first argument (accumulator) to callback.': function() {
+
+		// function reduceRight (array, callback, initialValue) {
+		// 	var startingIndex = array.length-1;
+		// 	var resultSoFar;
+
+		// 	// initialValue provided
+		// 	if (arguments.length > 2) {
+		// 		resultSoFar = initialValue;
+		// 	// no initialValue provided
+		// 	} else {
+		// 		startingIndex--;
+		// 		resultSoFar = array[array.length-1];
+		// 	}
+
+		// 	for (var i = startingIndex; i >= 0; i-- ) {
+		// 		callback(resultSoFar, array[i]);
+		// 	}
+		// }
+		// // ****************************************************
+
+		reduceRight([1,2], function (accumulator) {
+			eq(accumulator, 2);
+		} );
+	},
+	
+	'If no initialValue is provided it should pass the second-to-last index of the array as the second argument (currentValue) to callback.': function() {
+
+		reduceRight([1,2], function callback (accumulator, currentValue) {
+			eq(currentValue, 1);
+		} );
+
+	},
+	
+	'If initialValue is provided it should pass the index of the currentValue as the third argument to callback.': function() {
+
+		// function reduceRight (array, callback, initialValue) {
+		// 	var startingIndex = array.length-1;
+		// 	var resultSoFar;
+
+		// 	// initialValue provided
+		// 	if (arguments.length > 2) {
+		// 		resultSoFar = initialValue;
+		// 	// no initialValue provided
+		// 	} else {
+		// 		startingIndex--;
+		// 		resultSoFar = array[array.length-1];
+		// 	}
+
+		// 	for (var i = startingIndex; i >= 0; i-- ) {
+		// 		callback(resultSoFar, array[i], i);
+		// 	}
+		// }
+		// ****************************************************
+
+		reduceRight([1], function callback (accumulator, currentValue, index) {
+			eq(index, 0);
+			eq(currentValue, 1);
+		}, 0);		
+	},
+		
+	'If no initialValue is provided it should pass the index of the currentValue as the third argument to callback.': function() {
+
+		// function reduceRight (array, callback, initialValue) {
+		// 	var startingIndex = array.length-1;
+		// 	var resultSoFar;
+
+		// 	// initialValue provided
+		// 	if (arguments.length > 2) {
+		// 		resultSoFar = initialValue;
+		// 	// no initialValue provided
+		// 	} else {
+		// 		startingIndex--;
+		// 		resultSoFar = array[array.length-1];
+		// 	}
+
+		// 	for (var i = startingIndex; i >= 0; i-- ) {
+		// 		callback(resultSoFar, array[i], i);
+		// 	}
+		// }
+		// ****************************************************
+
+		reduceRight([1, 2], function callback (accumulator, currentValue, index) {
+			eq(index, 0);
+			eq(currentValue, 1);
+		});		
+	},
+	
+	'It should pass the array as the fourth argument to callback.': function() {
+		var testArray = [1,2,3];
+		reduceRight(testArray, function callback (accumulator, currentValue, index, array) {
+			eq(testArray, array);
+		} );
+	},
+
+	'It should reduce from right-to-left.': function() {
+		
+		// function reduceRight (array, callback, initialValue) {
+		// 	var startingIndex = array.length-1;
+		// 	var resultSoFar;
+
+		// 	// initialValue provided
+		// 	if (arguments.length > 2) {
+		// 		resultSoFar = initialValue;
+		// 	// no initialValue provided
+		// 	} else {
+		// 		startingIndex--;
+		// 		resultSoFar = array[array.length-1];
+		// 	}
+
+		// 	for (var i = startingIndex; i >= 0; i-- ) {
+		// 		resultSoFar = callback(resultSoFar, array[i], i, array);
+		// 	}
+		// 	return resultSoFar;
+		// }
+		// // ****************************************************
+
+		var returnValueOfReduceRight = reduceRight([1,2,3], function callback (accumulator, currentValue) {
+			return accumulator + currentValue;
+		}, 0);
+		eq(returnValueOfReduceRight, 6);
+	},
+
+	'If initialValue is provided it should skip holes.': function() {
+		
+		// function reduceRight (array, callback, initialValue) {
+		// 	var startingIndex = array.length-1;
+		// 	var resultSoFar;
+
+		// 	// initialValue provided
+		// 	if (arguments.length > 2) {
+		// 		resultSoFar = initialValue;
+		// 	// no initialValue provided
+		// 	} else {
+		// 		startingIndex--;
+		// 		resultSoFar = array[array.length-1];
+		// 	}
+
+
+		// 	for (var i = startingIndex; i >= 0; i-- ) {
+		// 		if (i in array) {
+		// 			resultSoFar = callback(resultSoFar, array[i], i, array);
+		// 		}
+		// 	}
+		// 	return resultSoFar;
+		// }
+		// // ****************************************************		
+
+		var testArray = [,,,1,2,3,];
+		var numberOftimesTheCallbackHasRun = 0;
+		reduceRight(testArray, function callback () {
+			numberOftimesTheCallbackHasRun++;
+		}, 0);
+		eq(testArray.length, 6);
+		eq(numberOftimesTheCallbackHasRun, 3);
+		
+	}, 
+	
+	'If no initialValue is provided it should skip holes.': function(){
+
+		// because trailing holes at the end of the array dont affect the array
+
+		var testArray = [,,,1,2,3,];
+		var numberOftimesTheCallbackHasRun = 0;
+		reduceRight(testArray, function callback () {
+			numberOftimesTheCallbackHasRun++;
+		});
+		eq(testArray.length, 6);
+		eq(numberOftimesTheCallbackHasRun, 2);		
+
+	},
+
+	'If initialValue is provided and the array is empty it should return the initialValue without calling callback.': function() {
+
+		var numberOftimesTheCallbackHasRun = 0;
+		var returnValueOfReduceRight = reduceRight([], function callback () {
+			numberOftimesTheCallbackHasRun++;
+		}, 1);
+		eq(numberOftimesTheCallbackHasRun, 0);
+		eq(returnValueOfReduceRight, 1);
+
+
+	},
+
+	'If no initialValue is provided and the array has only one element, it should return that element without calling callback.': function(){
+
+		var numberOftimesTheCallbackHasRun = 0;
+		var returnValueOfReduceRight = reduceRight([1], function callback () {
+			numberOftimesTheCallbackHasRun++;
+		});
+		eq(numberOftimesTheCallbackHasRun, 0);
+		eq(returnValueOfReduceRight, 1);
+	},
+
+	'It should throw TypeError if the array is empty and no initialValue is provided.': function(){
+
+
+		function reduceRight (array, callback, initialValue) {
+			
+
+			
+
+			var startingIndex = array.length-1;
+			var resultSoFar;
+
+			// initialValue provided
+			if (arguments.length > 2) {
+				resultSoFar = initialValue;
+			// no initialValue provided
+			} else {
+				// 
+				if (Object.keys(array).length === 0) {
+					throw new TypeError();
+				}
+				startingIndex--;
+				resultSoFar = array[array.length-1];
+			}
+
+
+			for (var i = startingIndex; i >= 0; i-- ) {
+				if (i in array) {
+					resultSoFar = callback(resultSoFar, array[i], i, array);
+				}
+			}
+			return resultSoFar;
+		}
+		// ****************************************************	
+
+		// set a variable to false
+		var isTypeError = false;
+		// set up try/catch block
+		try {
+			// run the function through the try block
+				// function should throw TypeError
+			reduceRight([], function callback () {} );
+		// send the thrown error into the catch block
+		} catch(e) {
+			// catch the error in a variable
+			var error = e;
+			// instanceof is an operarator which returns true or false.
+			var isTrueOrFalse = (error instanceof TypeError);
+			// set isTypeError to the true/false value;
+			isTypeError = isTrueOrFalse;
+		}
+		// test to see if isTypeError changed from false to true;
+		eq(isTypeError, true);
+	},
+	
+	
+
+});
+
+
+
+
+
+</script>

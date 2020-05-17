@@ -1,0 +1,220 @@
+<script src="../simpleTest.js"></script>
+<script>
+
+'use strict'
+
+/*
+the some() method tests whether at least one elements in the arry pass the test impletmented by the provided frunction. It returns a Boolean value.
+
+PARAMETERS
+	callback
+		element
+		index
+		array
+	thisArg
+
+RETURN VALUE
+true if the callback returns a truthy value for at least one element.
+Othewise false.
+
+PROTOTYPE
+
+function some(array, callback) {
+	for (var i = 0; i < array.length; i++) {
+		var callbackReturnValue = callback(array[i]);
+		if (callbackReturnValue) {
+			return true;
+		} 
+	}
+	return false;
+}
+
+TESTS:
+
+It should run.array length of times.
+It should pass the ith element of the array as the first argument into the callback.
+It should pass the index of the current element of the array as the second argument to the callback.
+It should pass the array as the third argument to the callback.
+It should immediately return true if the callback returns a truthy value.
+It should return false if all elements in the callback returns falsy.
+It should return false if the array is empty for any condition.
+It should invoke callback only for array indexes which have assigned values.  It should skip holes.
+It should not invoked callback for indexes which have been deleted.
+It should not mutate the array on which it is called.
+The range of elements proceessed by some is set before the first invocation of callback.
+If existing elements of the array are changed, their value as passed to callback will be the value at the time some visits them.
+It should use undefined as its this value if no thisArg is passed.
+It should accept an optional thisArg argument.
+
+*/
+
+function some(array, callback, thisArg) {
+
+	var someCallback = callback;
+	if (thisArg) {
+		someCallback = callback.bind(thisArg);
+	}
+
+	var lengthOfArray = array.length;
+	for (var i = 0; i < lengthOfArray; i++) {
+		if (i in array) {
+			var callbackReturnValue = someCallback(array[i], i, array);
+			if (callbackReturnValue) {
+				return true;
+			}					
+		}
+	}
+	return false;
+}
+
+
+tests({
+	'It should run.array length of times': function() {
+
+		var numberOfTimesTheCallbackHasRun = 0;
+		some([1,2,3], function callback () {
+			numberOfTimesTheCallbackHasRun++;
+		});
+		eq(numberOfTimesTheCallbackHasRun, 3);
+
+	},
+
+	'It should pass the ith element of the array as the first argument into the callback.': function() {
+
+		some([1], function callback (element) {
+			eq(element, 1);
+		});
+
+	},
+	
+	'It should pass the index of the current element of the array as the second argument to the callback.': function() {
+
+		some([1], function callback (element, index) {
+			eq(index, 0);
+		});
+
+	},
+
+	'It should pass the array as the third argument to the callback.': function() {
+
+		var testArray = [1,2,3];
+		some(testArray, function callback (element, index, array) {
+			eq(testArray, array);
+		});
+
+	},
+
+	'It should immediately return true if the callback returns a truthy value': function() {
+		var someReturnValue = false;
+		someReturnValue = some([1,2,3], function callback () {
+			return true;
+		});
+		eq(someReturnValue, true);
+	},
+	'It should return false if all elements in the callback returns falsy': function() {
+
+		var someReturnValue = true;
+		someReturnValue = some([1,2,3], function callback () {
+			return false;
+		});
+		eq(someReturnValue, false);
+
+	},
+	'It should return false if the array is empty for any condition': function(){
+
+		var someReturnValue = true;
+		someReturnValue = some([], function () {
+			return true;
+		});
+		eq(someReturnValue, false);
+
+	},	
+	'It should invoke callback only for array indexes which have assigned values.  It should skip holes.': function() {
+
+		var numberOfTimesTheCallbackHasRun = 0;
+		var testArray = [,,,1,2,3];
+		some(testArray, function callback () {
+			numberOfTimesTheCallbackHasRun++;
+			return false;
+		});
+
+		eq(testArray.length, 6);
+		eq(numberOfTimesTheCallbackHasRun, 3);
+
+	},
+	'It should not invoked callback for indexes which have been deleted.': function() {
+
+		var numberOfTimesTheCallbackHasRun = 0;
+		some([1,2,3], function callback (element, index, array) {
+			if (index === 0) {
+				console.log("BEFORE: ", array);
+				delete array[1];
+				console.log("AFTER: ", array);
+			}
+			numberOfTimesTheCallbackHasRun++;
+			return false;
+		});
+		eq(numberOfTimesTheCallbackHasRun, 2);
+
+	}, 
+ 
+ 
+
+	'It should not mutate the array on which it is called.': function() {
+// have array
+// run some()
+// did the array mutate?
+
+		var testArray = [1,2,3];
+		some(testArray, function () {});
+		eq(testArray[0],1);
+		eq(testArray[1],2);
+		eq(testArray[2],3);
+
+	}, 
+	'The range of elements proceessed by some is set before the first invocation of callback': function() {
+
+		var numberOfTimesTheCallbackHasRun = 0;
+		some([1,2,3], function callback (element, index, array) {
+			array.push(100);
+			numberOfTimesTheCallbackHasRun++;
+			return false;
+		});
+		eq(numberOfTimesTheCallbackHasRun, 3);
+
+	}, 
+	' If existing elements of the array are changed, their value as passed to callback will be the value at the time some visits them.': function() {
+
+		some([1,2,3], function (element, index, array) {
+			if (index === 0) {
+				array[2] = 100;
+			}
+			if (index === 2) {
+				eq(element, 100);
+			}
+		} );
+
+	}, 
+	'It should use undefined as its this value if no thisArg is passed.': function() {
+		
+		some([1,2,3], function callback () {
+			eq(this, undefined);
+		} );
+
+	},
+	'It should accept an optional thisArg argument.': function() {
+
+		var thisArg = {name: "you can see me inside the callback!"};
+		some([1,2,3], function callback () {
+			eq(this.name, thisArg.name);
+			eq(this.name, "you can see me inside the callback!");
+		}, thisArg );
+	}	
+
+});
+
+
+
+
+
+</script>

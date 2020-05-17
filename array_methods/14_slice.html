@@ -1,0 +1,225 @@
+<script src="../simpleTest.js"></script>
+<script>
+'use strict'
+
+/*
+The slice() method returns a shallow copy of a portion of an array into a new array object selected from begin to end (end not included) where begin and end represent the index of items in that array. The original array will not be modified.
+
+SYNTAX
+	slice(array[, begin[, end]]);
+
+PARAMETERS
+	array
+	begin
+	end
+
+RETURN VALUE
+	A new array containing the extracted elements
+
+PROTOTYPE
+
+function slice (array, begin, end) {
+	var sliceArray = [];
+	var startingIndex = 0;
+	var endingIndex = array.length;
+	if (begin) {
+		startingIndex = begin;
+	}
+	if (end) {
+		endingIndex = end;
+	}
+	for (var i = startingIndex; i < end; i++) {
+		sliceArray.push(array[i]);
+	}
+	return sliceArray;
+}
+
+TESTS
+
+begin
+A negative index can be used, indicating an offset from the end of the sequence.
+if begin is undefined, slice begins from index 0.
+If begin is greater than the index range of the sequence, an empty array is returned.
+end
+slice extracts up to but not including end.
+A negative index can be used, indicating an offset from the end of the sequence.
+If end is omitted, slice extracts through the end of the sequence.
+If end is greater than the length of the sequence, slice extracts through to the end of the sequence.
+return
+A new array containing the extracted elements.
+slice does not alter the original array.
+It returns a shallow copy of elements from the original array.
+*/
+
+
+		function slice (array, begin, end) {
+			var startingIndex = 0;
+			var sliceArray = [];
+			var numberOfTimesLoopIsRun = array.length;
+			if (begin) {
+				if (begin < 0) {
+					startingIndex = array.length + begin;
+				} else {
+					startingIndex = begin;
+				}
+			}
+			if (end) {
+				numberOfTimesLoopIsRun = end;
+			}
+			for (var i = startingIndex; i < numberOfTimesLoopIsRun; i++) {
+				sliceArray.push(array[i]);
+			}
+			return sliceArray;
+		}
+
+tests({
+	'It should return an array': function() {
+
+			var returnValueOfSlice = slice([]);
+			eq(Array.isArray(returnValueOfSlice), true);
+
+	},
+
+	'It should return a new array.': function() {
+
+		var testArray = [];
+		var returnValueOfSlice = slice([]);
+		eq(testArray !== returnValueOfSlice, true);
+	},
+
+	'It should return a new array containing the extracted elements.': function() {
+
+		var testArray = [1];
+		var returnValueOfSlice = slice(testArray);
+		eq(returnValueOfSlice[0], testArray[0]);
+	},
+	
+	'It should return a shallow copy of elements from the original array.': function() {
+
+		var testArray = [1];
+		var returnValueOfSlice = slice(testArray);
+		eq(returnValueOfSlice[0], testArray[0]);
+		eq(testArray !== returnValueOfSlice, true);
+	},
+
+	'It should not alter the original array': function() {
+
+		var testArray = [1];
+		var returnValueOfSlice = slice(testArray);
+		eq(testArray[0], 1);
+		eq(testArray.length, 1);
+
+
+	},
+	'The first argument is the index to begin extraction': function() {
+
+		var testArray = [1, 2];
+		var returnValueOfSlice = slice(testArray, 1);
+		eq(returnValueOfSlice[0], 2);
+
+	},
+	'A negative index can be used for begin, indicating an offset from the end of the sequence.': function() {
+
+		// function slice (array, begin) {
+		// 	var startingIndex = 0;
+		// 	var sliceArray = [];
+		// 	if (begin) {
+		// 		startingIndex = begin;
+		// 		if (begin < 0) {
+		// 			startingIndex = array.length + begin;
+		// 		}
+				
+		// 	}
+		// 	for (var i = startingIndex; i < array.length; i++) {
+		// 		sliceArray.push(array[i]);
+		// 	}
+		// 	return sliceArray;
+		// }
+
+		var testArray = [1,2];
+		var returnValueOfSlice = slice(testArray, -1);
+		eq(returnValueOfSlice[0], 2);
+	},
+	'if begin is undefined, slice begins from index 0.': function() {
+
+		var testArray = [1];
+		var returnValueOfSlice = slice(testArray, undefined);
+		eq(returnValueOfSlice[0], 1);		
+	},
+	'If begin is greater than the index range of the sequence, an empty array is returned.': function() {
+		
+		var testArray = [1];
+		var returnValueOfSlice = slice(testArray, 2);
+		eq(returnValueOfSlice[0] === undefined, true);
+		eq(Array.isArray(returnValueOfSlice), true);
+	}, 
+	'slice extracts up to but not including end.': function() {
+
+		// function slice (array, begin, end) {
+		// 	var startingIndex = 0;
+		// 	var sliceArray = [];
+		// 	var numberOfTimesLoopIsRun = array.length;
+		// 	if (begin) {
+		// 		startingIndex = begin;
+		// 		if (begin < 0) {
+		// 			startingIndex = array.length + begin;
+		// 		}
+		// 	}
+		// 	if (end) {
+		// 		numberOfTimesLoopIsRun = end;
+		// 	}
+		// 	for (var i = startingIndex; i < numberOfTimesLoopIsRun; i++) {
+		// 		sliceArray.push(array[i]);
+		// 	}
+		// 	return sliceArray;
+		// }
+
+		var testArray = [1,2];
+		var returnValueOfSlice = slice(testArray, 0, 1);
+		eq(returnValueOfSlice[0], 1);
+		eq(returnValueOfSlice[1], undefined);
+	}, 
+	'If end is omitted, slice extracts through the end of the sequence.': function() {
+
+		var testArray = [1];
+		var returnValueOfSlice = slice(testArray, 0);
+		eq(returnValueOfSlice[0], 1);
+	}, 
+	'If end is greater than the length of the sequence, slice extracts through to the end of the sequence.': function(){
+
+		var testArray = [1];
+		var returnValueOfSlice = slice(testArray, 0, 2);
+		eq(returnValueOfSlice[0], 1);
+	},
+	
+	'For object references (and not the actual object), slice copies object references into the new array.': function(){
+
+		var testObj = {name: "I am an object"};
+		var testArray = [testObj];
+		var returnValueOfSlice = slice(testArray);
+		eq(returnValueOfSlice[0], testObj);
+		testArray.push(testObj);
+		eq(returnValueOfSlice[0], testArray[0]);
+		eq(returnValueOfSlice[0], testArray[1]);
+		eq(returnValueOfSlice[1] === undefined, true);
+	},
+	
+	'For strings, numbers and booleans (not String, Number and Boolean objects), slice copies the values into the new array.': function(){
+
+		
+		var testArray = [1];
+		var returnValueOfSlice = slice(testArray);
+		testArray.push("primitive");
+		eq(testArray.length, 2);
+		eq(returnValueOfSlice.length, 1);
+	}
+	
+	
+
+});
+
+
+
+
+
+</script>
