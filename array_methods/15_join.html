@@ -115,91 +115,18 @@ tests({
 		eq(returnValueOfJoin, "");
 	},
 	'if seperator is empty string all elements are joined together no spaces.': function() {
-		// function join (array, seperator) {
-		// 	var stringToReturn = "";
-		// 	if (arguments.length > 1) {
-		// 		var joinSeperator = seperator;
-		// 	} else {
-		// 		joinSeperator = ",";
-		// 	}
-			
-		// 	for (var i = 0; i < array.length; i++) {
-
-		// 		var currentElement = null;
-		// 		if (typeof array[i] === "string") {
-		// 			currentElement = array[i];
-		// 		} else {
-		// 			var stringifiedObjectOrValue = JSON.stringify(array[i]);
-		// 			currentElement = stringifiedObjectOrValue;
-		// 		}
-		// 		if (i === 0) {
-		// 			stringToReturn = currentElement;
-		// 		} else {
-		// 			stringToReturn = stringToReturn + joinSeperator + currentElement;
-		// 		}	
-		// 	}
-
-		// 	return stringToReturn;
-		// }
 
 		var returnValueOfJoin = join([1,2,{}], '');
 		eq(returnValueOfJoin, "12{}");
 	},	
 	'if no seperator the elements are seperated with a comma': function() {
 		
-		// function join (array) {
-		// 	var stringToReturn = "";
-		// 	for (var i = 0; i < array.length; i++) {
-
-		// 		var currentElement = null;
-		// 		if (typeof array[i] === "string") {
-		// 			currentElement = array[i];
-		// 		} else {
-		// 			var stringifiedObjectOrValue = JSON.stringify(array[i]);
-		// 			currentElement = stringifiedObjectOrValue;
-		// 		}
-		// 		if (i === 0) {
-		// 			stringToReturn = currentElement;
-		// 		} else {
-		// 			stringToReturn = stringToReturn + "," + currentElement;
-		// 		}	
-		// 	}
-
-		// 	return stringToReturn;
-		// }
-
 		var returnValueOfJoin = join([1,2]);
 		eq(returnValueOfJoin, "1,2");
 	},
 
 	'If seperator it is converted into a string if necessary': function() {
 		
-		// function join (array, seperator) {
-		// 	var stringToReturn = "";
-		// 	if (arguments.length > 1) {
-		// 		var joinSeperator = JSON.stringify(seperator);
-		// 	} else {
-		// 		joinSeperator = ",";
-		// 	}
-			
-		// 	for (var i = 0; i < array.length; i++) {
-
-		// 		var currentElement = null;
-		// 		if (typeof array[i] === "string") {
-		// 			currentElement = array[i];
-		// 		} else {
-		// 			var stringifiedObjectOrValue = JSON.stringify(array[i]);
-		// 			currentElement = stringifiedObjectOrValue;
-		// 		}
-		// 		if (i === 0) {
-		// 			stringToReturn = currentElement;
-		// 		} else {
-		// 			stringToReturn = stringToReturn + joinSeperator + currentElement;
-		// 		}	
-		// 	}
-
-		// 	return stringToReturn;
-		// }		
 		var returnValueOfJoin = join([1,2], {});
 		eq(returnValueOfJoin, "1{}2");
 	},
@@ -211,51 +138,7 @@ tests({
 
 	},
 	'if an element is undefined, null, or an empty array [], it is converted to an empty string.': function() {
-		// function join (array, seperator) {
-		// 	var stringToReturn = "";
-		// 	var joinSeperator = ",";
-		// 	if (arguments.length > 1) {
-		// 		if (typeof seperator === "string") {
-		// 			joinSeperator = seperator;
-		// 		} else {
-		// 			joinSeperator = JSON.stringify(seperator);
-		// 		}
-		// 		if (seperator === "") {
-		// 			joinSeperator = '';
-		// 		}
-		// 	} 
-			
-		// 	for (var i = 0; i < array.length; i++) {
 
-				
-		// 		if (array[i] === undefined ) {
-		// 			array[i] = "";
-		// 		}
-		// 		if (array[i] === null) {
-		// 			array[i] = "";
-		// 		}
-		// 		if (Array.isArray(array[i]) === true && array[i].length === 0) {
-		// 			array[i] = "";
-		// 		}
-				
-				
-		// 		var currentElement = null;
-		// 		if (typeof array[i] === "string") {
-		// 			currentElement = array[i];
-		// 		} else {
-		// 			var stringifiedObjectOrValue = JSON.stringify(array[i]);
-		// 			currentElement = stringifiedObjectOrValue;
-		// 		}
-
-		// 		if (i === 0) {
-		// 			stringToReturn = currentElement;
-		// 		} else {
-		// 			stringToReturn = stringToReturn + joinSeperator + currentElement;
-		// 		}	
-		// 	}
-
-		// 	return stringToReturn;
-		// }
 		var returnValueOfJoin = join([1, undefined, 2, null, 3, [], 4]);
 		eq(returnValueOfJoin, "1,,2,,3,,4");
 		var returnValueOfJoin1 = join([undefined]);

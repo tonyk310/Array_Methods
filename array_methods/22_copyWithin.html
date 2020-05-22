@@ -115,25 +115,6 @@ tests({
 
 	'It should paste the copy at the target.': function() {
 
-		// function copyWithin (array, target, start, end) {
-		// 	var copyWithinArray = [];
-		// 	var startingIndex = 0;
-		// 	var endingIndex = array.length;
-		// 	if (start) {
-		// 		startingIndex = start;
-		// 	}
-		// 	if (end) {
-		// 		endingIndex = end;
-		// 	}
-		// 	for (var i = startingIndex; i < endingIndex; i++) {
-		// 		copyWithinArray.push(array[i]);
-		// 	}
-		// 	for (var i = target; i < copyWithinArray.length; i++) {
-		// 		array[i] = copyWithinArray[i];
-		// 	}
-		// 	return array;
-		// }	
-
 		var testArray = [0, 1];
 		eq(testArray[0], 0);	
 		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1);
@@ -141,31 +122,6 @@ tests({
 	},
 
 	'If the target is negative it will be counted from the end.': function() {
-
-
-		// function copyWithin (array, target, start, end) {
-		// 	var copyWithinArray = [];
-		// 	var startingIndex = 0;
-		// 	var endingIndex = array.length;
-		// 	var target = target;
-		// 	if (target < 0) {
-		// 		target = array.length + target;
-		// 	}
-		// 	if (start) {
-		// 		startingIndex = start;
-		// 	}
-		// 	if (end) {
-		// 		endingIndex = end;
-		// 	}
-		// 	for (var i = startingIndex; i < endingIndex; i++) {
-		// 		copyWithinArray.push(array[i]);
-		// 	}
-		// 	for (var i = target; i < copyWithinArray.length; i++) {
-		// 		array[i] = copyWithinArray[i];
-		// 	}
-		// 	return array;
-		// }	
-
 
 		var testArray = [0, 1, 2];
 		var returnValueOfCopyWithin = copyWithin(testArray, -3, 2);
@@ -180,33 +136,6 @@ tests({
 	},
 	'If the target is positioned after start, the copied sequence will be trimmed to fit arr.length.': function() {
 
-		// function copyWithin (array, target, start, end) {
-		// 	var copyWithinArray = [];
-		// 	var startingIndex = 0;
-		// 	var endingIndex = array.length;
-
-		// 	if (target < 0) {
-		// 		target = array.length + target;
-		// 	}
-		// 	if (start) {
-		// 		startingIndex = start;
-		// 	}
-		// 	if (end) {
-		// 		endingIndex = end;
-		// 	}
-			
-		// 	for (var i = startingIndex; i < endingIndex; i++) {
-		// 		copyWithinArray.push(array[i]);
-		// 	}
-			
-		// 	for (var i = 0; i < copyWithinArray.length; i++) {
-		// 		// target added to i lets you have the zero index in teh array plus the target added to the array
-		// 		array[i + target] = copyWithinArray[i];
-		// 	}
-		// 	return array;
-		// }	
-
-	
 		var testArray = [0, 1, 2];
 		var returnValueOfCopyWithin = copyWithin(testArray, 1, 0);
 		eq(testArray[0], 0);
@@ -223,34 +152,6 @@ tests({
 
 	}, 
 	'if start is negative it will be counted from the end.': function() {
-
-		// function copyWithin (array, target, start, end) {
-		// 	var copyWithinArray = [];
-		// 	var startingIndex = 0;
-		// 	var endingIndex = array.length;
-
-		// 	if (target < 0) {
-		// 		target = array.length + target;
-		// 	}
-		// 	if (start) {
-		// 		startingIndex = start;
-		// 	}
-		// 	if (start < 0) {
-		// 		startingIndex = array.length + start;
-		// 	}
-		// 	if (end) {
-		// 		endingIndex = end;
-		// 	}
-			
-		// 	for (var i = startingIndex; i < endingIndex; i++) {
-		// 		copyWithinArray.push(array[i]);
-		// 	}
-			
-		// 	for (var i = 0; i < copyWithinArray.length; i++) {
-		// 		array[i + target] = copyWithinArray[i];
-		// 	}
-		// 	return array;
-		// }	
 
 		var testArray = [0, 1];
 		var returnValueOfCopyWithin = copyWithin(testArray, 0, -1);
@@ -276,36 +177,6 @@ tests({
 
 	'if end is negative, end will be counted from the end.': function(){
 
-		// function copyWithin (array, target, start, end) {
-		// 	var copyWithinArray = [];
-		// 	var startingIndex = 0;
-		// 	var endingIndex = array.length;
-
-		// 	if (target < 0) {
-		// 		target = array.length + target;
-		// 	}
-		// 	if (start) {
-		// 		startingIndex = start;
-		// 	}
-		// 	if (start < 0) {
-		// 		startingIndex = array.length + start;
-		// 	}
-		// 	if (end) {
-		// 		endingIndex = end;
-		// 	}
-		// 	if (end < 0) {
-		// 		endingIndex = array.length + end;
-		// 	}
-			
-		// 	for (var i = startingIndex; i < endingIndex; i++) {
-		// 		copyWithinArray.push(array[i]);
-		// 	}
-			
-		// 	for (var i = 0; i < copyWithinArray.length; i++) {
-		// 		array[i + target] = copyWithinArray[i];
-		// 	}
-		// 	return array;
-		// }	
 
 		var testArray = [0, 1, 2];
 		var returnValueOfCopyWithin = copyWithin(testArray, 0, 1, -1);

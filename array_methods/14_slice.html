@@ -120,22 +120,6 @@ tests({
 	},
 	'A negative index can be used for begin, indicating an offset from the end of the sequence.': function() {
 
-		// function slice (array, begin) {
-		// 	var startingIndex = 0;
-		// 	var sliceArray = [];
-		// 	if (begin) {
-		// 		startingIndex = begin;
-		// 		if (begin < 0) {
-		// 			startingIndex = array.length + begin;
-		// 		}
-				
-		// 	}
-		// 	for (var i = startingIndex; i < array.length; i++) {
-		// 		sliceArray.push(array[i]);
-		// 	}
-		// 	return sliceArray;
-		// }
-
 		var testArray = [1,2];
 		var returnValueOfSlice = slice(testArray, -1);
 		eq(returnValueOfSlice[0], 2);
@@ -154,25 +138,6 @@ tests({
 		eq(Array.isArray(returnValueOfSlice), true);
 	}, 
 	'slice extracts up to but not including end.': function() {
-
-		// function slice (array, begin, end) {
-		// 	var startingIndex = 0;
-		// 	var sliceArray = [];
-		// 	var numberOfTimesLoopIsRun = array.length;
-		// 	if (begin) {
-		// 		startingIndex = begin;
-		// 		if (begin < 0) {
-		// 			startingIndex = array.length + begin;
-		// 		}
-		// 	}
-		// 	if (end) {
-		// 		numberOfTimesLoopIsRun = end;
-		// 	}
-		// 	for (var i = startingIndex; i < numberOfTimesLoopIsRun; i++) {
-		// 		sliceArray.push(array[i]);
-		// 	}
-		// 	return sliceArray;
-		// }
 
 		var testArray = [1,2];
 		var returnValueOfSlice = slice(testArray, 0, 1);

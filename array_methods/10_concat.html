@@ -50,39 +50,6 @@ function concat (array) {
 		}
 
 tests({
-	// 'It should return an array': function() {
-	// 	var returnValueOfConcat = concat();
-	// 	eq(Array.isArray(returnValueOfConcat), true);
-	// },
-
-
-
-	// 'it should loop through as many times as there are elements': function() {
-	// 	var returnValueOfConcat = concat([1], [2,3], [4, [5,6]]);
-	// 	eq(returnValueOfConcat.length, 5);
-	// },
-	
-	// 'it should creates a new array consisting of the elements in the object on which it is called,': function() {
-	// 	var arr1 = [1];
-	// 	var arr2 = [2];
-	// 	var returnValueOfConcat = concat(arr1, arr2);
-	// 	eq(arr1[0], returnValueOfConcat[0]);
-	// 	eq(arr2[0], returnValueOfConcat[1]);
-
-	// },
-	// 'it should not alter this': function() {
-	// 	var isThis = this;
-	// 	concat();
-	// 	eq(isThis, this);
-	// },
-	// 'it should not alter the arrays provided': function() {
-	// 	var arr1 = [1];
-	// 	var arr2 = [2];
-	// 	concat(arr1, arr2);
-	// 	eq(arr1[0], 1);
-	// 	eq(arr2[0], 2);
-	// },
-
 	'The concat method creates a new array': function() {
 		var testArray = [1,2,3];
 		var returnValueOfConcat = concat(testArray);
@@ -106,21 +73,6 @@ tests({
 	},
 	
 	'or the argument itself (if the argument is not an array). ': function() {
-		// function concat (array) {
-		// 	var arrayToReturn = [];
-		// 		for (var i = 0; i < arguments.length; i++) {
-		// 			if (Array.isArray(arguments[i])) {
-		// 				for (var j = 0; j < arguments[i].length; j++) {
-		// 					arrayToReturn.push(arguments[i][j]);
-		// 				}
-		// 			} else {
-		// 				arrayToReturn.push(arguments[i]);
-		// 			}
-
-				
-		// 		}
-		// 	return arrayToReturn;
-		// }
 
 		var testArray1 = [1];
 		var primitive = 2;
@@ -130,6 +82,7 @@ tests({
 	},
 	
 	'It does not recurse into nested array arguments.': function() {
+
 		var testArray1 = [1,2];
 		var testArray2 = [3,4];
 		var returnValueOfConcat = concat(testArray1, testArray2);
@@ -138,18 +91,19 @@ tests({
 	},
 	
 	'The concat method does not alter this': function() {
+
 		var isThis = this;
 		concat();
 		eq(isThis, this);
 	},
 	
 	'The concat method does not alter any of the arrays provided as arguments ': function() {
+
 		var testArray1 = [1];
 		var testArray2 = [2];
 		concat(testArray1, testArray2);
 		eq(testArray1[0], 1);
 		eq(testArray2[0], 2);
-
 	},
 	
 	'but instead returns a shallow copy that contains copies of the same elements combined from the original arrays': function() {
@@ -181,12 +135,6 @@ tests({
 		eq(typeof returnValueOfConcat[0] === 'object', false);
 
 	},
-
-	
-
-	
-	
-
 });
 
 

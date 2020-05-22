@@ -45,18 +45,6 @@ function findIndex (array, searchElement, fromIndex) {
 	return -1;
 }
 
-TESTS:
-It should accept and array as the first argument
-It should accept searchElement as the second argument
-ReturnValue
-	It should return the first index at which a given element can be found.
-	If no element is found it should return -1.
-
-fromIndex
-	fromIndex is the index indexOf() should start the search at.
-	If the index is greater than or equal to the array's length, -1 is returned, which means the array will not be searched
-	If the provided index value is a negative number, it is taken as the offset from the end of the array.
-	If the provided index is 0, then the whole array will be searched
 
 */
 
@@ -83,47 +71,18 @@ tests({
 
 	'It should return a value other than undefined': function() {
 
-		// function indexOf () {
-		// 	return -1;
-		// }
 		var returnValueOfIndexOf = indexOf([0]);
 		eq(Boolean(returnValueOfIndexOf), true);
 	},
 
 	'It should return the first index at which a given element can be found.': function() {
-		
-		// function indexOf (array, searchElement) {
-			
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		if  (array[i] === searchElement) {
-		// 			return i;
-		// 		}
-		// 	}
 
-		// 	return -1;
-		// }
 		var testArray = [0];
 		var returnValueOfIndexOf = indexOf(testArray, 0);
 		eq(returnValueOfIndexOf, testArray[0]);
 	},
 	
 	'It should accept an optional fromIndex as the third argument': function() {
-
-		// function indexOf (array, searchElement, fromIndex) {
-		// 	var beginSearchAt = 0;
-
-		// 	if (arguments.length > 2) {
-		// 		beginSearchAt = fromIndex;
-		// 	}
-			
-		// 	for (var i = beginSearchAt; i < array.length; i++) {
-		// 		if  (array[i] === searchElement) {
-		// 			return i;
-		// 		}
-		// 	}
-
-		// 	return -1;
-		// }
 
 		var testArray = [1, 1, 1];
 		var returnValueOfIndexOf = indexOf(testArray, 1, 2);
@@ -138,25 +97,6 @@ tests({
 	},
 	'If the provided index value is a negative number, it is taken as the offset from the end of the array.': function() {
 		
-		// function indexOf (array, searchElement, fromIndex) {
-		// 	var beginSearchAt = 0;
-
-		// 	if (arguments.length > 2) {
-		// 		beginSearchAt = fromIndex;
-		// 		if (fromIndex < 0) {
-		// 			beginSearchAt = array.length + fromIndex;
-		// 		}
-		// 	}
-			
-		// 	for (var i = beginSearchAt; i < array.length; i++) {
-		// 		if  (array[i] === searchElement) {
-		// 			return i;
-		// 		}
-		// 	}
-
-		// 	return -1;
-		// }
-
 		var testArray = [1, 1, 1];
 		var returnValueOfIndexOf = indexOf(testArray, 1, -2);
 		eq(returnValueOfIndexOf, 1);
@@ -164,33 +104,10 @@ tests({
 	},
 	'If the provided index is 0, then the whole array will be searched': function() {
 
-		function indexOf (array, searchElement, fromIndex) {
-			var beginSearchAt = 0;
-
-			if (arguments.length > 2) {
-				beginSearchAt = fromIndex;
-				if (fromIndex < 0) {
-					beginSearchAt = array.length + fromIndex;
-				}
-			}
-			
-			for (var i = beginSearchAt; i < array.length; i++) {
-				if  (array[i] === searchElement) {
-					return i;
-				}
-			}
-
-			return -1;
-		}
-
 		var testArray = [1, 1, 1];
 		var returnValueOfIndexOf = indexOf(testArray, 1, 0);
 		eq(returnValueOfIndexOf, 0);
-
-
 	}
-	
-
 });
 
 

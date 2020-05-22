@@ -160,15 +160,10 @@ if the specified number of elements to insert is different from the number of el
 tests({
 	'It should return an array.': function() {
 
-		// function splice () {
-		// 	return [];
-		// }
-
 		var returnValueOfSplice = splice([]);
 		eq(Array.isArray(returnValueOfSplice), true);
 	},
 	'if no start it should return an empty array': function() {
-
 
 		var testArray = [1];
 		var returnValueOfSplice = splice(testArray);
@@ -176,35 +171,12 @@ tests({
 	},
 	'It should return an array containing the deleted elements.': function() {
 
-		// function splice (array) {
-		// 	var spliceArray = [];
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-
-		// 	return spliceArray;
-		// }
-
-
 		var testArray = [1];
 		var returnValueOfSplice = splice(testArray, 0);
 		eq(returnValueOfSplice[0], 1);
 	},
-
-
 	
 	'Start is the index at which to start changing the array.': function() {
-
-		// function splice (array, start) {
-		// 	var spliceArray = [];
-		// 	// start become the index to start.
-		// 	for (var i = start; i < array.length; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-		// 	return spliceArray;
-		// }
-
-
 
 		var testArray = [1,2];
 		eq(testArray[1], 2);
@@ -215,22 +187,6 @@ tests({
 	},
 
 	'If start is greater than the length of the array, start will be set to to the length of the array.': function() {
-
-		// function splice (array, start) {
-		// 	var spliceArray = [];
-		// 	var lengthOfArray = array.length;
-		// 	var startingIndex = start;
-		// 	// if start > array.length
-		// 	if (start > lengthOfArray) {
-		// 		// startingIndex is set to array.length
-		// 		startingIndex = lengthOfArray;
-		// 	}
-
-		// 	for (var i = startingIndex; i < lengthOfArray; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-		// 	return spliceArray;
-		// }
 
 		var testArray = [1];
 		eq(testArray.length < 2, true);
@@ -250,24 +206,6 @@ tests({
 	},
 	'if start is negative, it will begin that many elements from the end of the array.': function() {
 
-		// function splice (array, start) {
-		// 	var spliceArray = [];
-		// 	var lengthOfArray = array.length;
-		// 	var startingIndex = start;
-		// 	// start conditions
-		// 	if (start > lengthOfArray) {
-		// 		startingIndex = lengthOfArray;
-		// 		// if start is less than 0
-		// 	} else if (start < 0) {
-		// 		startingIndex = lengthOfArray + start;
-		// 	}
-
-		// 	for (var i = startingIndex; i < lengthOfArray; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-		// 	return spliceArray;
-		// }
-
 		var testArray = [1,2];
 		var returnValueOfSplice = splice(testArray, -1);
 		eq(testArray[0], 1);
@@ -275,26 +213,6 @@ tests({
 
 	},
 	'If array.length + start is less than 0, it will begin from index 0.': function() {
-
-		// function splice (array, start) {
-		// 	var spliceArray = [];
-		// 	var lengthOfArray = array.length;
-		// 	var startingIndex = start;
-		// 	// start conditions
-		// 	if (start > lengthOfArray) {
-		// 		startingIndex = lengthOfArray;
-		// 	// if start + array.length > 0
-		// 	} else if (start + lengthOfArray < 0) {
-		// 		startingIndex = 0;
-		// 	} else if (start < 0) {
-		// 		startingIndex = lengthOfArray + start;
-		// 	} 
-
-		// 	for (var i = startingIndex; i < lengthOfArray; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-		// 	return spliceArray;
-		// }
 
 		var testArray = [1,2];
 		var start = -3;
@@ -307,28 +225,6 @@ tests({
 	},
 	'If deleteCount is ommited all the elements from start to the end of the array will be deleted.': function() {
 
-		// function splice (array, start, deleteCount) {
-		// 	var spliceArray = [];
-		// 	var lengthOfArray = array.length;
-		// 	var lengthOfElementsToRemove = lengthOfArray;
-
-		// 	var startingIndex = start;
-		// 	// start conditions
-		// 	if (start > lengthOfArray) {
-		// 		startingIndex = lengthOfArray;
-		// 	// if start + array.length > 0
-		// 	} else if (start + lengthOfArray < 0) {
-		// 		startingIndex = 0;
-		// 	} else if (start < 0) {
-		// 		startingIndex = lengthOfArray + start;
-		// 	} 
-
-		// 	for (var i = startingIndex; i < lengthOfElementsToRemove; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-		// 	return spliceArray;
-		// }	
-
 		var testArray = [1,2];
 		eq(testArray[0], 1);
 		eq(testArray[1], 2);
@@ -339,32 +235,6 @@ tests({
 
 	}, 	
 	'deleteCount is an integer indicating the number of elements in the array to remove from start.': function() {
-
-		// function splice (array, start, deleteCount) {
-		// 	var spliceArray = [];
-		// 	var lengthOfArray = array.length;
-		// 	var lengthOfElementsToRemove = lengthOfArray;
-
-		// 	var startingIndex = start;
-		// 	// start conditions
-		// 	if (start > lengthOfArray) {
-		// 		startingIndex = lengthOfArray;
-		// 	// if start + array.length > 0
-		// 	} else if (start + lengthOfArray < 0) {
-		// 		startingIndex = 0;
-		// 	} else if (start < 0) {
-		// 		startingIndex = lengthOfArray + start;
-		// 	} 
-
-		// 	if (arguments.length > 2) {
-		// 		lengthOfElementsToRemove = deleteCount;
-		// 	}
-
-		// 	for (var i = startingIndex; i < lengthOfElementsToRemove; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-		// 	return spliceArray;
-		// }	
 
 		var testArray = [1,2];
 		eq(testArray[0], 1);
@@ -377,35 +247,6 @@ tests({
 
 	'If deleteCount is equal to or larger than array.length - start all the elements from start to the end of the array will be deleted.': function() {
 
-		// function splice (array, start, deleteCount) {
-		// 	var spliceArray = [];
-		// 	var lengthOfArray = array.length;
-		// 	var lengthOfElementsToRemove = lengthOfArray;
-
-		// 	var startingIndex = start;
-		// 	// start conditions
-		// 	if (start > lengthOfArray) {
-		// 		startingIndex = lengthOfArray;
-		// 	} else if (start + lengthOfArray < 0) {
-		// 		startingIndex = 0;
-		// 	} else if (start < 0) {
-		// 		startingIndex = lengthOfArray + start;
-		// 	} 
-		// 	// deleteCount
-		// 	if (arguments.length > 2) {
-		// 		if (deleteCount >= lengthOfArray - start) {
-		// 			lengthOfElementsToRemove = lengthOfArray;
-		// 		} else {
-		// 			lengthOfElementsToRemove = deleteCount;	
-		// 		}
-				
-		// 	}
-
-		// 	for (var i = startingIndex; i < lengthOfElementsToRemove; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-		// 	return spliceArray;
-		// }
 
 		var testArray = [1,2];
 		eq(testArray[0], 1);
@@ -457,56 +298,6 @@ tests({
 	}, 
 	'If no itemN, splice will only remove elements from the array.': function(){
 
-		// function splice (array, start, deleteCount) {
-		// 	var spliceArray = [];
-		// 	var remainderArray = [];
-		// 	var lengthOfArray = array.length;
-		// 	var endingIndexOfSpliceArray = lengthOfArray;
-		// 	var startingIndexOfSpliceArray = start;
-		// 	var startingIndexOfRemainderArray = start + deleteCount;
-		// 	// start conditions
-		// 	if (start > lengthOfArray) {
-		// 		startingIndexOfSpliceArray = lengthOfArray;
-		// 	} else if (start + lengthOfArray < 0) {
-		// 		startingIndexOfSpliceArray = 0;
-		// 	} else if (start < 0) {
-		// 		startingIndexOfSpliceArray = lengthOfArray + start;
-		// 	} 
-		// 	// deleteCount
-		// 	if (arguments.length > 2) {
-		// 		if (deleteCount >= lengthOfArray - start) {
-		// 			endingIndexOfSpliceArray = lengthOfArray;
-		// 		} else {
-		// 			endingIndexOfSpliceArray = startingIndexOfSpliceArray + deleteCount;	
-		// 		}
-				
-		// 	}
-
-		// 	// pushing into spliceArray
-		// 	for (var i = startingIndexOfSpliceArray; i < endingIndexOfSpliceArray; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-			
-
-		// 	// build array which contains the remaining elements.  elements not removed
-		// 	// the starting value of i will be not 0
-		// 	// but it will be
-		// 	// startingIndex + deleteCount
-
-		// 	// push into remainderArray
-		// 	for (var i = startingIndexOfRemainderArray; i < lengthOfArray; i++) {
-		// 		remainderArray.push(array[i]);
-		// 	}
-
-		// 	// match orginalArray to remainder array
-		// 	for (var i = startingIndexOfSpliceArray; i < lengthOfArray - startingIndexOfSpliceArray; i++) {
-		// 		array[i] = remainderArray[i - startingIndexOfSpliceArray];
-		// 	}
-
-
-		// 	array.length = array.length - spliceArray.length;
-		// 	return spliceArray;
-		// }
 
 		var testArray = [1,2,3];
 		eq(testArray[0], 1);
@@ -516,65 +307,6 @@ tests({
 		eq(testArray[1], 3);	
 	}, 	
 	'ItemN are the elements to add to the array beginning at start.': function(){
-
-		// function splice (array, start, deleteCount) {
-		// 	var spliceArray = [];
-		// 	var remainderArray = [];
-		// 	// create argumentsArray literal
-		// 	var argumentsArray = [];
-
-		// 	var lengthOfArray = array.length;
-		// 	var endingIndexOfSpliceArray = lengthOfArray;
-		// 	var startingIndexOfSpliceArray = start;
-		// 	var startingIndexOfRemainderArray = start + deleteCount;
-		// 	// start conditions
-		// 	if (start > lengthOfArray) {
-		// 		startingIndexOfSpliceArray = lengthOfArray;
-		// 	} else if (start + lengthOfArray < 0) {
-		// 		startingIndexOfSpliceArray = 0;
-		// 	} else if (start < 0) {
-		// 		startingIndexOfSpliceArray = lengthOfArray + start;
-		// 	} 
-		// 	// deleteCount
-		// 	if (arguments.length > 2) {
-		// 		if (deleteCount >= lengthOfArray - start) {
-		// 			endingIndexOfSpliceArray = lengthOfArray;
-		// 		} else {
-		// 			endingIndexOfSpliceArray = startingIndexOfSpliceArray + deleteCount;	
-		// 		}
-				
-		// 	}
-		// 	// pushing into spliceArray
-		// 	for (var i = startingIndexOfSpliceArray; i < endingIndexOfSpliceArray; i++) {
-		// 		spliceArray.push(array[i]);
-		// 	}
-
-		// 	// push into remainderArray
-		// 	for (var i = startingIndexOfRemainderArray; i < lengthOfArray; i++) {
-		// 		remainderArray.push(array[i]);
-		// 	}
-
-		// 	// push into argumentsArray
-		// 	for (var i = 3; i < arguments.length; i++) {
-		// 		argumentsArray.push(arguments[i]);
-		// 	}
-
-		// 	// concat argumentsArray with remainderArray
-		// 	var insertsArray = argumentsArray.concat(remainderArray);
-
-		// 	// match orginalArray to inserts array
-		// 	for (var i = startingIndexOfSpliceArray; i < startingIndexOfSpliceArray + insertsArray.length; i++) {
-		// 		array[i] = insertsArray[i - startingIndexOfSpliceArray];
-		// 	}
-			
-		// 	if (arguments.length === 2 || arguments.length === 3) {
-		// 		array.length = array.length - spliceArray.length;
-		// 	}
-
-		// 	return spliceArray;
-		// }
-
-
 
 		var testArray = [1,2,3];
 		eq(testArray[0], 1);
@@ -589,8 +321,6 @@ tests({
 
 	'If itemN exists, and start is greater than the length of the array, itemN will be added to the array.': function(){
 
-
-
 		var testArray = [1,2,3];
 		eq(testArray[0], 1);
 		eq(testArray[1], 2);	
@@ -600,15 +330,12 @@ tests({
 		eq(testArray[1], 2);	
 		eq(testArray[2], 3);	
 		eq(testArray[3], 9);	
-	
 
 	}, 
 	'if the specified number of elements to insert is different from the number of elements being removed, array.length will be different at the end of the call.': function(){
 
-
 		var testArray = [1,2,3];
 		eq(testArray.length, 3);
-
 			
 		var returnValueOfSplice = splice(testArray, 4, 0, 9);
 		eq(testArray.length, 4);

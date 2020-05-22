@@ -60,12 +60,6 @@ tests({
 	
 	'It should remove index 0 from the array.': function() {
 
-		// function shift (array) {
-		// 	var elementToReturn = array[0];
-		// 	array.splice(0, 1);
-		// 	return elementToReturn;
-		// }
-
 		var testArray = [0];
 		eq(testArray[0], 0);
 		var returnValueOfShift = shift(testArray);
@@ -73,7 +67,6 @@ tests({
 	},
 
 	'It should shift the values of the the consecutive indexes down.': function() {
-
 
 		var testArray = [0, 1];
 		eq(testArray[0], 0);
@@ -100,21 +93,6 @@ tests({
 		eq(isTypeError, true);
 
 	},
-	// 'Objects which do contain a length property reflecting the last in a series of consecutive, zero-based numerical properties may  behave in any meaningful manner.': function() {
-
-
-	// 	var testArray = {
-	// 		0: 0,
-	// 		length: 1
-	// 	};
-	// 	eq(testArray.length, 1);
-	// 	var returnValueOfShift = shift(testArray);
-	// 	eq(returnValueOfShift, 0);
-	// 	eq(testArray.length, 0);
-
-
-	// },
-
 
 });
 

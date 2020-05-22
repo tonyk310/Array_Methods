@@ -70,14 +70,6 @@ It should pass an optional thisArg into the callback.
 tests({
 	'It should run.array length of times.': function() {
 
-// *******************************************************
-		// function findIndex (array, callback) {
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		callback();
-		// 	}
-		// }
-// *******************************************************
-
 		var testArray = [1,2,3];
 		var numberOfTimesTheCallbackHasRun = 0;
 		findIndex(testArray, function callback(){
@@ -87,13 +79,6 @@ tests({
 	},
 
 	'It should pass the ith element of the array as the first argument into the callback.': function() {
-// *******************************************************
-		// function findIndex (array, callback) {
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		callback(array[i]);
-		// 	}
-		// }
-// *******************************************************
 		
 		findIndex([1], function callback(element) {
 			eq(element, 1);
@@ -101,13 +86,6 @@ tests({
 	},
 	
 	'It should pass the index of the current element of the array as the second argument to the callback.': function() {
-// // *******************************************************
-// 		function findIndex (array, callback) {
-// 			for (var i = 0; i < array.length; i++) {
-// 				callback(array[i], i);
-// 			}
-// 		}
-// // *******************************************************
 
 		findIndex([1], function callback(element, index) {
 			eq(index, 0);
@@ -115,13 +93,7 @@ tests({
 	},
 
 	'It should pass the array as the third argument to the callback.': function() {
-// // *******************************************************
-// 		function findIndex (array, callback) {
-// 			for (var i = 0; i < array.length; i++) {
-// 				callback(array[i], i, array);
-// 			}
-// 		}
-// // *******************************************************
+
 		var testArray = [1];
 		findIndex(testArray, function callback(element, index, array) {
 			eq(array, testArray);
@@ -129,17 +101,7 @@ tests({
 	},
 
 	'It should return the index of the first value the callback returns truthy.': function() {
-		// function findIndex (array, callback) {
-		// 	var result = null;
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		result = callback(array[i], i, array);
-		// 		if(result) {
-		// 			return i;
-		// 		}
-		// 	}
-		// 	return result;
-		// }
-// // *******************************************************
+
 		var found = findIndex([1], function callback(){
 			return true;
 		});
@@ -147,17 +109,7 @@ tests({
 	},
 	
 	'It should return -1 if the callback does not return truthy.': function() {
-		// function findIndex (array, callback) {
-		// 	var result = null;
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		result = callback(array[i], i, array);
-		// 		if(result) {
-		// 			return i;
-		// 		}
-		// 	}
-		// 	return -1;
-		// }
-// // *******************************************************
+
 		var found = findIndex([1], function callback(){
 			return false;
 		});
@@ -181,18 +133,6 @@ tests({
 	
 	'It should not run the callback more times that the original length of the array even if the callback adds to the length of the array.': function() {
 
-// // *******************************************************
-// 		function findIndex (array, callback) {
-// 			var lengthOfArray = array.length;
-// 			for (var i = 0; i < lengthOfArray; i++) {
-// 				var result = callback(array[i], i, array);
-// 				if(result) {
-// 					return i;
-// 				}
-// 			}
-// 			return -1;
-// 		}
-// // *******************************************************		
 		var numberOfTimesTheCallbackHasRun = 0;
 		var testArray = [1,2,3];
 		findIndex(testArray, function(element, index, array){
@@ -202,24 +142,11 @@ tests({
 			console.log("Pushed array", array);
 		});
 		console.log("testArray: ", testArray);
-		eq(numberOfTimesTheCallbackHasRun, 3);
-		
+		eq(numberOfTimesTheCallbackHasRun, 3);		
 	}, 
 
 	'It should run the callback for elements which are deleted.': function() {
 
-// *******************************************************
-// 		function findIndex (array, callback) {
-			
-// 			for (var i = 0; i < array.length; i++) {
-// 				var result = callback(array[i], i, array);
-// 				if(result) {
-// 					return i;
-// 				}
-// 			}
-// 			return -1;
-// 		}
-// // *******************************************************		
 		var testArray = [1,2,3];
 		var found = findIndex(testArray, function callback(element, index, array) {
 			if (index === 0) {
@@ -244,8 +171,6 @@ tests({
 				array[1] = 4;
 				console.log("changed array", array);
 			}
-			
-
 
 			if (element === 4) {
 				return true;
@@ -255,23 +180,6 @@ tests({
 	}, 
 
 	'It should pass an optional thisArg into the callback.': function(){
-// *******************************************************
-		// function findIndex (array, callback, thisArg) {
-
-		// 	var findIndexCallback = callback;
-		// 	if(thisArg) {
-		// 		findIndexCallback = callback.bind(thisArg);
-		// 	}
-			
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		var result = findIndexCallback(array[i], i, array);
-		// 		if(result) {
-		// 			return i;
-		// 		}
-		// 	}
-		// 	return -1;
-		// }
-// *******************************************************
 		var thisArg = {name: "you should be able to see me within the callback"};
 		findIndex([1], function callback() {
 			eq(this.name, thisArg.name);

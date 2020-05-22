@@ -72,18 +72,6 @@ tests({
 
 	'It should append a value to  end original array.': function() {
 
-
-		// function push (array) {
-			
-		// 	var startingIndex = array.length;
-
-		// 	for (var i = startingIndex; i < arguments.length; i++) {
-		// 		array[i] = arguments[i];
-		// 	}
-
-		// 	return startingIndex;
-		// }
-
 		var testArray = [1];
 		var returnValueOfPush = push(testArray, 2);
 		eq(testArray.length === 2, true);
@@ -92,7 +80,6 @@ tests({
 	},
 
 	'It should append multiple values to end original array.': function() {
-
 
 		var testArray = [1];
 		var returnValueOfPush = push(testArray, 2,3);
@@ -112,27 +99,6 @@ tests({
 	},
 
 	'If the length property cannot be converted into a number,  the index is 0.': function() {
-
-		// function push (array) {
-
-		// 	if (Boolean(array.length) === false) {
-		// 		array.length = 0;
-		// 	}
-
-		// 	var lengthOfArray = array.length;
-		// 	var numberOfTimesLoopRuns = (lengthOfArray + arguments.length) - 1;
-
-
-			
-		// 	for (var i = 0; i < numberOfTimesLoopRuns; i++) {
-		// 		if (array[i] === undefined) {
-		// 			var argumentIndex = (i - lengthOfArray + 1);
-		// 			array[i] = arguments[argumentIndex];
-		// 		}
-		// 	}
-
-		// 	return numberOfTimesLoopRuns;
-		// }	
 
 		var testArray = {
 			length: "string"
@@ -163,45 +129,14 @@ tests({
 
 	'It should not accept strings as the first argument.': function() {
 
-		function push (array) {
-
-			if (typeof(array) === "string") {
-				throw new TypeError("Strings are not suitable as the first argument because strings are immutable.");
-			}
-
-			if (Number.isInteger(array.length) === false) {
-				array.length = 0;
-			}
-
-			var lengthOfArray = array.length;
-			var numberOfTimesLoopRuns = (lengthOfArray + arguments.length) - 1;
-
-
-			
-			for (var i = 0; i < numberOfTimesLoopRuns; i++) {
-				if (array[i] === undefined) {
-					var argumentIndex = (i - lengthOfArray + 1);
-					array[i] = arguments[argumentIndex];
-				}
-			}
-
-			return numberOfTimesLoopRuns;
-		}
 		var isTypeError = false;
 		try {
 			push("string");
 		} catch(error) {
 			var isTypeError = (error instanceof TypeError);
 		}
-		
 		eq(isTypeError, true);
-
-
 	},
-
-	
-	
-
 });
 
 

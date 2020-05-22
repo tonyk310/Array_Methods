@@ -1,59 +1,170 @@
 <script src="../simpleTest.js"></script>
 <script>
-	
 
-// function find(array, callback) {
-	
-// 	for (var i = 0; i < array.length; i++) {
+/*
+The find() method returns the value of the first element in the provided array that satisfies the provided testing function.
 
-// 		var valueToReturn = callback(array[i]);
+SYNTAX
+arr.find(callback(element[, index[, array]])[, thisArg])
+
+PARAMETERS
+	callback
+		Function to execute on each value in the array, taking 3 arguments:
+			element
+				the current element in the array
+			index
+				The index (position) of the currnet element in the array
+			array
+				The array that find was called on.
+	thisArg
+		Object to use this inside callback.
+
+Return Value
+	The value of the first element in the array that satisfies the provided testing function.  Otherwise, undefined is returned.
+
+Description
+	The find method executes the callback function once for each index of the array until the callback returns a truthy value.  If so, find immediately returns the value of that element.  Otherwise, find returns undefined.
+	callback is invoked for every index of the array, not just those with assigned values.  This means it may be less efficient for sparse arrays, compared to methods that only visit assigned values.
+	If a thisArg parameter is provided to find, it will be used as the this value inside each invocation of callback.  If it is not provided, then undefined is used.
+	The find method does not mutate the array on which it is called, but the function provided to callback can.  If so, the elements processed by find are set before the first invocation of callback.  Therefore:
+	callbak will not visit any element added to the array after the call to find begins.
+	If an existing, yet unvisited elemnt of the array is change by callback, its value passed to the callback will be the value at the time find visits that element's index.
+	Elements that are deleted are still visited.
+*/
+	
+// PROTOTYPE
+	// function find(array, callback) {
 		
-// 		if (valueToReturn !== undefined) {
-// 			return valueToReturn;
-// 		}	
-// 	}
-// }
+	// 	for (var i = 0; i < array.length; i++) {
+
+	// 		var valueToReturn = callback(array[i]);
+			
+	// 		if (valueToReturn !== undefined) {
+	// 			return valueToReturn;
+	// 		}	
+	// 	}
+	// }
+
+	
+function myFind(array, callback, thisArg) {
+
+	var myFindCallback = callback;
+
+	if (arguments.length > 2) {
+		myFindCallback = callback.bind(thisArg);
+	}
+
+	for (var i = 0; i < array.length; i++) {
+		var callbackReturnValue = myFindCallback(array[i], i, array);
+		if (callbackReturnValue) {
+			return array[i];
+		}
+	}
+}
 
 
 
 // 'tests' defined in simpleTest.js
 tests({
-	'It should run array.length times': function() {
-		
+	'It should run array.length times.': function() {
+		var numberOfTimesTheCallbackRuns = 0;
+		myFind([1,2,3], function callback() {
+			numberOfTimesTheCallbackRuns++;
+		});
+		eq(numberOfTimesTheCallbackRuns, 3);
 	},
 
 	'It should pass in the ith element of the array (array[i]) as the first argument into the callback function.': function() {
-		fail();
+
+		myFind([1], function callback(element) {
+			eq(element, 1);
+		});
 	},
 
 	'It should pass in the index of the current element of the array as the second argument into the callback function.': function() {
-		fail();
+
+		myFind([1], function callback(element, index) {
+			eq(index, 0);
+		});
 	},
 	
 	'It should pass in the originalArray as the third argument into the callback function.': function() {
-		fail();
+
+		var testArray = [1];
+		myFind(testArray, function callback(element, index, array) {
+			eq(testArray, array);
+		});
 	},
 
-
-	'It should return a value.': function() {
-		fail();
+	'It should return undefined if the callback does not return truthy.': function() {
+		
+		var found = myFind([], function callback(){});
+		eq(found, undefined);
 	},
 
-	'It should return undefined if the callback does not return truthy': function() {
-		fail();
+	'It should immediately return the value of the first element where the callback returns truthy.': function() {
+		
+		var found = myFind([1,2], function callback(element){
+			return element === 2;
+		});
+		eq(found, 2);
 	},
 
-	'It should immediately return the value of the first element where the callback returns truthy': function() {
-		fail();
+	'It should not skip holes.': function() {
+		var testArray = [,,,,,1,2,3];
+		var numberOfTimesTheCallbackRuns = 0;
+		var found = myFind(testArray, function callback(element) {
+			numberOfTimesTheCallbackRuns++;
+			return element === 3;
+		});
+		eq(testArray.length, numberOfTimesTheCallbackRuns);
+		eq(found, 3);
 	},
 
-	'It should be invoked for every index of the array': function() {
-		fail();
+	'It should have an optional this argument.': function() {
+		
+		var myObject = { name: "you should be able to access this object within the callback" };
+		myFind([1], function callback() {
+			eq(this.name, myObject.name);
+			eq(this.name, "you should be able to access this object within the callback");
+		}, myObject);
+	},
+	'It should not allow the callbak to visit any element added to the array after the call to find begins.': function() {
+
+		var originalArray = [1,2,3];
+		var numberOfTimesTheCallbackRuns = 0;
+		myFind(originalArray, function callback(element, index, array) {
+			array.push(4);
+			numberOfTimesTheCallbackRuns++;
+			
+		});
+		eq(3, numberOfTimesTheCallbackRuns);
+
 	},
 
-	'It should not skip holes': function() {
-		fail();
+	'If an existing, yet unvisited element of the array is change by callback, its value passed to the callback will be the value at the time find visits that elements index.': function () {
+	
+		var originalArray = [1,2];
+		var found = myFind(originalArray, function callback(element, index, array) {
+			array[1] = 3;
+			return element === 3;
+		});
+		eq(found, 3);
 	},
+	'It should still return the origial element even if the callback deletes it.': function() {
+
+		originalArray = [1,2,3];
+		var found = myFind(originalArray, function callback(element, index, array) {
+			if(index === 0) {
+		        console.log('Deleting array[2] with value ', array[2]);
+		        delete array[2];
+		    }
+		    console.log("Visited index: " + index + " with value " + element);
+		    return element === 3;
+		});
+
+		eq(found, undefined);
+	}
 });
 
 

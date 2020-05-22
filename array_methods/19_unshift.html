@@ -54,7 +54,6 @@ It should only accept objects as the first argument.
 */
 
 function unshift (array) {
-	// first we have to create a new array filled with the old array.
 
 	if (!Array.isArray(array)) {
 		throw new TypeError("First argument must be an array.");
@@ -85,27 +84,6 @@ function unshift (array) {
 tests({
 	'It should return the new length of the array.': function() {
 
-		// function unshift (array) {
-		// 	var originalArray = [];
-		// 	var argumentsLength = arguments.length - 1;
-		// 	var totalLength = array.length + argumentsLength;
-
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		originalArray[i] = array[i];
-		// 	}
-
-		// 	for (var i = 0; i < totalLength; i++) {
-		// 		if (i < argumentsLength) {
-		// 			var argumentsIndex = i + 1;
-		// 			array[i] = arguments[argumentsIndex];
-		// 		} else {
-		// 			var originalArrayIndex = i - argumentsLength;
-		// 			array[i] = originalArray[originalArrayIndex];
-		// 		}
-		// 	}
-		// 	return totalLength;
-		// }
-
 		var testArray = [1];
 		eq(testArray.length, 1);
 		var returnValueOfUnshift = unshift(testArray, 0);
@@ -114,7 +92,6 @@ tests({
 	},
 
 	'It should add an element to the beginning of the array.': function() {
-
 
 		var testArray = [1];
 		eq(testArray[0], 1);

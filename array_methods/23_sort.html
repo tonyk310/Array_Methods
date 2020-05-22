@@ -126,39 +126,6 @@ tests({
 	
 	'if no compareFunction, It should sort ascending.': function() {
 
-		// function sort (array) {
-			
-		// 	// loop though the array
-		// 	for (var i = 0; i < array.length; i++) {
-
-		// 		// grab element
-		// 		// array[i]
-		// 		// compare element against the rest of the elements in the array
-		// 		// loop through array again.
-		// 		// but we dont want to start at index 0 because we already have it in array[i]
-		// 		// so set j to the index we are at + 1
-		// 		// that gets us to the next index, which is what we want to compare.
-		// 		for (var j = i+1; j < array.length; j++) {
-		// 			// we want to sort ascending.
-		// 			// i.e we want to put the lower value at the lower index.
-		// 			// currently i is the lower index
-		// 			// so if array[i] is greater than array[j]
-		// 			// e.g. if 2 > 1
-		// 			if (array[i] > array[j]) {
-		// 				// we want to swap the value to the lower index.
-		// 				// so we grab the value of the the index
-		// 				var placeholder = array[i];
-		// 				// and we set the value of the current index to the lower value, i.e. array[j]
-		// 				array[i] = array[j];
-		// 				// then we set the value of the current j to the other value
-		// 				array[j] = placeholder;
-
-		// 			}
-		// 		}				
-		// 	}
-		// 	return array;
-		// }
-
 		var testArray = [2,1];
 		var returnValueOfSort = sort(testArray); // [1,2]
 		eq(returnValueOfSort[0], 1);
@@ -167,53 +134,13 @@ tests({
 	},
 	'if no compareFunction, It should convert elements into strings and sort by Unicode point value.': function() {
 
-		// function sort (array) {
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		for (var j = i+1; j < array.length; j++) {
-		
-		// 			var value1 = String(array[i]);
-		// 			var value2 = String(array[j]);
-		// 			if (value1 > value2) {
-		
-		// 				var placeholder = array[i];
-		// 				array[i] = array[j];
-		// 				array[j] = placeholder;
-		// 			}
-		// 		}				
-		// 	}
-		// 	return array;
-		// }
-
 		var testArray = [2,100];
 		var returnValueOfSort = sort(testArray); // [0,1]
 		eq(returnValueOfSort[0], 100);
 		eq(returnValueOfSort[1], 2);
-
-
 	},
 
 	'if no compareFunction, all undefined elements are sorted to the end of the array': function() {
-
-		// function sort (array) {
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		for (var j = i+1; j < array.length; j++) {
-		// 			var value1 = String(array[i]);
-		// 			var value2 = String(array[j]);
-		// 			// put a condition in the if statement
-		// 			// so it is false that "u" > "z"
-		// 			// Boolean("u" > "z"); // false
-		// 			// but we put in an or operator
-		// 			// and array[i], the element in question is equal to undefined
-		// 			// therefore, swap the position of array[i] to a "lower" value.
-		// 			if (value1 > value2 || array[i] === undefined) {
-		// 				var placeholder = array[i];
-		// 				array[i] = array[j];
-		// 				array[j] = placeholder;
-		// 			}
-		// 		}				
-		// 	}
-		// 	return array;
-		// }
 
 		var testArray = [undefined,"zebra"];
 		var returnValueOfSort = sort(testArray); // ["zebra",undefined]
@@ -222,28 +149,6 @@ tests({
 	},
 	'It should accept a compare function.': function() {
 
-		// function sort (array, compareFunction) {
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		for (var j = i+1; j < array.length; j++) {
-
-
-
-		// 			if (compareFunction) {
-		// 				compareFunction();
-		// 			}
-
-
-		// 			var value1 = String(array[i]);
-		// 			var value2 = String(array[j]);
-		// 			if (value1 > value2 || array[i] === undefined) {
-		// 				var placeholder = array[i];
-		// 				array[i] = array[j];
-		// 				array[j] = placeholder;
-		// 			}
-		// 		}				
-		// 	}
-		// 	return array;
-		// }
 		var numberOfTimesCompareFuntionRuns = 0;
 		var testArray = [2,1,0];
 		var returnValueOfSort = sort(testArray, function compareFunction() {
@@ -254,32 +159,6 @@ tests({
 
 	},
 	'if compareFunction is present, elements are sorted according to the return value of the compareFunction.': function() {
-
-		// function sort (array, compareFunction) {
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		for (var j = i+1; j < array.length; j++) {
-
-		// 			var compare1; 
-		// 			var compare2; 
-					
-		// 			if (compareFunction) {
-		// 				var returnValueOfCompareFunction = compareFunction(array[i], array[j]);
-		// 				compare1 = returnValueOfCompareFunction;
-		// 				compare2 = 0;
-		// 			} else {
-		// 				compare1 = String(array[i]);
-		// 				compare2 = String(array[j]);							
-		// 			}
-					
-		// 			if (compare1 > compare2 || array[i] === undefined) {
-		// 				var placeholder = array[i];
-		// 				array[i] = array[j];
-		// 				array[j] = placeholder;
-		// 			}
-		// 		}				
-		// 	}
-		// 	return array;
-		// }
 
 		var testArray = [2, 100];
 		var returnValueOfSort = sort(testArray);
@@ -302,76 +181,6 @@ tests({
 
 	}, 
 	'if compareFunction is present, undefined elements are sorted to the end of the array with no call to compareFunction.': function() {
-
-		// function sort (array, compareFunction) {
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		for (var j = i+1; j < array.length; j++) {
-
-		// 			var	compare1;
-		// 			var compare2;
-					
-		// 			if (compareFunction) {
-		// 				if (compare1 === undefined) {
-		// 					compare1 = 1;
-		// 					compare2 = 0;
-		// 				} else {	
-		// 					var returnValueOfCompareFunction = compareFunction(compare1, compare2);
-		// 					compare1 = returnValueOfCompareFunction;
-		// 					compare2 = 0;								
-		// 				}
-		// 			} 
-					
-		// 			compare1 = String(array[i]);
-		// 			compare2 = String(array[j]);
-
-		// 			if (compare1 > compare2) {
-		// 				var placeholder = array[i];
-		// 				array[i] = array[j];
-		// 				array[j] = placeholder;
-		// 				console.log(array);
-		// 			}
-					
-		// 		}				
-		// 	}
-		// 	// console.log(array);
-		// 	return array;
-		// }
-// ****************************************************************************
-		// function sort (array, compareFunction) {
-		// 	// compare array[i] against all other elements in the array
-		// 	for (var i = 0; i < array.length; i++) {
-		// 		for (var j = i+1; j < array.length; j++) {
-					
-		// 			var compareMe = array[i];
-		// 			var againstMe = array[j];
-
-		// 			if (array[i] === undefined) {
-		// 				compareMe = 1;
-		// 				againstMe = 0;
-		// 			} 
-		// 			if (array[j] === undefined) {
-		// 				compareMe = 0;
-		// 				againstMe = 1;
-		// 			}
-
-		// 			if (compareFunction && array[i] !== undefined && array[j] !== undefined) {
-		// 				var returnValueOfCompareFunction = compareFunction(compareMe, againstMe);
-		// 				compareMe = returnValueOfCompareFunction;
-		// 				againstMe = 0;				
-		// 			}
-
-		// 			compareMe = String(compareMe);
-		// 			againstMe = String(againstMe);				
-				
-		// 			if (compareMe > againstMe) {
-		// 				var placeholder = array[i];
-		// 				array[i] = array[j];
-		// 				array[j] = placeholder;		
-		// 			}
-		// 		}
-		// 	}
-		// 	return array;
-		// }		
 
 		var numberOfTimesCompareFuntionRuns = 0;
 		var testArray = [undefined, 2, undefined, 1];
@@ -439,44 +248,6 @@ tests({
 
 });
 
-// function sort (array, compareFunction) {
-// 	// compare array[i] against all other elements in the array
-// 	for (var i = 0; i < array.length; i++) {
-// 		for (var j = i+1; j < array.length; j++) {
-			
-// 			var compareMe = array[i];
-// 			var againstMe = array[j];
-
-// 			if (array[i] === undefined) {
-// 				compareMe = 1;
-// 				againstMe = 0;
-// 			} 
-// 			if (array[j] === undefined) {
-// 				compareMe = 0;
-// 				againstMe = 1;
-// 			}
-
-// 			if (compareFunction && array[i] !== undefined && array[j] !== undefined) {
-// 				var returnValueOfCompareFunction = compareFunction(compareMe, againstMe);
-// 				compareMe = returnValueOfCompareFunction;
-// 				againstMe = 0;				
-// 			}
-
-// 			compareMe = String(compareMe);
-// 			againstMe = String(againstMe);				
-		
-// 			if (compareMe > againstMe) {
-// 				var placeholder = array[i];
-// 				array[i] = array[j];
-// 				array[j] = placeholder;		
-// 				console.log(array);		
-// 			}
-// 		}
-// 	}
-// 	return array;
-// }
-// debugger;
-sort([undefined,1,undefined,6,undefined,8,undefined, 3, undefined, 9]);
 
 
 
